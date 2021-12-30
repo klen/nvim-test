@@ -20,11 +20,6 @@ jobs:
       # Install vusted
       - run: luarocks install vusted
 
-      # Clone nvim-treesitter
-      - uses: actions/checkout@main
-        with:
-          name: nvim-treesitter/nvim-treesitter
-
       - uses: rhysd/action-setup-vim@v1
         id: vim
         with:
