@@ -3,4 +3,4 @@ nvim-treesitter:
 
 .PHONY: test t
 test t: nvim-treesitter
-	vusted
+	vusted -C $(CURDIR)
