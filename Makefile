@@ -4,5 +4,5 @@ nvim-treesitter:
 LUA_PATH := $(LUA_PATH):$(CURDIR)
 test t: nvim-treesitter
 	@echo $(CURDIR)
-	vusted --shuffle
+	vusted --shuffle --lpath="./?.lua;./?/?.lua;./?/init.lua"
 .PHONY: test t

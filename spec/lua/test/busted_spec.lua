@@ -1,5 +1,4 @@
 require "spec.lua.conftest"
-print(999, vim.inspect(vim.fn.split(package.path), ";"))
 
 local helpers = require "spec.lua.helpers"
 
