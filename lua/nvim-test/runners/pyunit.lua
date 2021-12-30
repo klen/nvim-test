@@ -20,15 +20,12 @@ function pyunit:is_test(name)
 end
 
 function pyunit:build_args(filename, opts)
-  local args = ""
+  local args = self.config.args
   if filename then
     args = args .. " " .. vim.fn.fnamemodify(filename, ":.:r"):gsub("/", ".")
   end
   if opts.tests and #opts.tests > 0 then
     args = args .. "." .. table.concat(opts.tests, ".")
-  end
-  if self.config.args then
-    args = args .. " " .. self.config.args
   end
   return args
 end

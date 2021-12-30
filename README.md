@@ -2,6 +2,8 @@
 
 Test Runner for neovim
 
+[![tests](https://github.com/klen/nvim-test/actions/workflows/tests.yml/badge.svg)](https://github.com/klen/nvim-test/actions/workflows/tests.yml)
+
 ## Features
 
 | Language       | Test Runners                     |

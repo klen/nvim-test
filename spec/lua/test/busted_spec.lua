@@ -1,5 +1,3 @@
-require "spec.lua.conftest"
-
 local helpers = require "spec.lua.helpers"
 
 describe("busted", function()

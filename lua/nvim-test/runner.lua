@@ -2,7 +2,7 @@
 local ts_utils = require "nvim-treesitter.ts_utils"
 
 local Runner = {
-  config = {},
+  config = { args = "" },
 }
 Runner.__index = Runner
 
@@ -56,15 +56,12 @@ function Runner:build_cmd(filename, opts)
 end
 
 function Runner:build_args(filename, opts)
-  local args = ""
+  local args = self.config.args
   if filename then
     args = args .. " " .. filename
   end
   if opts.tests and #opts.tests > 0 then
     args = args .. self:build_test_args(opts.tests)
-  end
-  if self.config.args then
-    args = args .. " " .. self.config.args
   end
   return args
 end

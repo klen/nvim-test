@@ -17,12 +17,13 @@ function gotest:is_test(name)
 end
 
 function gotest:build_args(filename, opts)
+  local args = self.config.args
   if not filename then
-    return " ./..."
+    return args .. " ./..."
   end
 
-  local args = "./" .. vim.fn.fnamemodify(filename, ":.:h")
-  args = (args == "./.") and "" or (args .. "/...")
+  local path = "./" .. vim.fn.fnamemodify(filename, ":.:h")
+  args = args .. ((path == "./.") and "" or (path .. "/..."))
   if opts.tests then
     args = string.format(" -run %s ", vim.fn.shellescape(opts.tests[1] .. "$")) .. args
   end

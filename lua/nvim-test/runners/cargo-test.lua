@@ -24,8 +24,9 @@ end
 
 function cargotest:build_args(filename, opts)
   -- for whole suite do nothing
+  local args = self.config.args
   if not filename then
-    return ""
+    return args
   end
 
   local parts = vim.fn.split(vim.fn.fnamemodify(filename, ":.:r"), "/")
@@ -42,10 +43,10 @@ function cargotest:build_args(filename, opts)
   end
 
   if opts.tests and #opts.tests > 0 then
-    return " " .. table.concat(opts.tests, "::") .. " -- --exact"
+    return args .. " " .. table.concat(opts.tests, "::") .. " -- --exact"
   end
 
-  return modname or ""
+  return args .. (modname or "")
 end
 
 return cargotest
