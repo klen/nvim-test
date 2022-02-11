@@ -1,20 +1,23 @@
 local Runner = require "nvim-test.runner"
 local local_cmd = "./node_modules/.bin/jest"
 
+local query = [[
+  ((expression_statement
+    (call_expression
+      function: (identifier)
+      arguments: (arguments [
+        ((string) @method-name)
+        ((template_string) @method-name)
+      ]
+    )))
+  @scope-root)
+]]
+
 local jest = Runner:init {
   command = vim.fn.filereadable(local_cmd) ~= 0 and local_cmd or "jest",
   queries = {
-    javascript = [[
-      ((expression_statement
-        (call_expression
-          function: (identifier)
-          arguments: (arguments [
-            ((string) @method-name)
-            ((template_string) @method-name)
-          ]
-        )))
-      @scope-root)
-		]],
+    typescript = query,
+    javascript = query,
   },
 }
 

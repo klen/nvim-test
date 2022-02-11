@@ -6,6 +6,7 @@ local mocha = Runner:init {
   command = vim.fn.filereadable(local_cmd) ~= 0 and local_cmd or "mocha",
   queries = {
     javascript = jest.config.queries.javascript,
+    typescript = jest.config.queries.typescript,
   },
 }
 
