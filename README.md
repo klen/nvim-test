@@ -48,7 +48,6 @@ Default options:
 require('nvim-test').setup {
   commands_create = true,   -- create commands (TestFile, TestLast, ...)
   silent = false,           -- less notifications
-  strategy = 'terminal',    -- how to tun tests (terminal|toggleterm)
   run = true,               -- run test commands
   split = 'vsplit',         -- split window before run (split|vsplit|nil)
   cmd = 'terminal %s'       -- a vim command to run test
