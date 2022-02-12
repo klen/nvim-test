@@ -1,5 +1,7 @@
 name: tests
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
 
 jobs:
   test:
