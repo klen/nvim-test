@@ -4,6 +4,10 @@ local M = {
   config = vim.deepcopy(require "nvim-test.config"),
   notifier = nil,
 }
+local splits = {
+  vertical = "vsplit",
+  horizontal = "split",
+}
 
 -- Run tests
 ---
@@ -44,21 +48,13 @@ end
 ---@param cmd string: a command to run
 function M.run_cmd(cmd)
   vim.g.nvim_last = cmd
-  M.open()
   M.notifier:onotify(cmd)
   if M.config.run then
-    vim.fn.termopen(cmd)
+    if M.config.split then
+      vim.cmd(M.config.split)
+    end
+    vim.cmd(M.config.cmd:format(cmd))
   end
-end
-
--- Open a new buffer for tests
----
-function M.open()
-  api.nvim_command(M.config.split)
-  local winnr = vim.fn.win_getid()
-  local bufnr = api.nvim_create_buf(false, false)
-  api.nvim_set_current_buf(bufnr)
-  api.nvim_win_set_buf(winnr, bufnr)
 end
 
 -- Setup the plugin

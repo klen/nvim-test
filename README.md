@@ -37,3 +37,28 @@ The plugin defines the commands:
 - `TestFile` - run all tests in the current file
 - `TestSuite` - run the whole test suite
 - `TestLast` - run the last test
+
+## Setup
+
+This plugin must be explicitly enabled by using `require("nvim-test").setup{}`
+
+Default options:
+
+```lua
+require('nvim-test').setup {
+  commands_create = true,   -- create commands (TestFile, TestLast, ...)
+  silent = false,           -- less notifications
+  strategy = 'terminal',    -- how to tun tests (terminal|toggleterm)
+  run = true,               -- run test commands
+  split = 'vsplit',         -- split window before run (split|vsplit|nil)
+  cmd = 'terminal %s'       -- a vim command to run test
+  runners = {               -- setup tests runners
+    go = "nvim-test.runners.go-test",
+    javascript = "nvim-test.runners.jest",
+    lua = "nvim-test.runners.busted",
+    python = "nvim-test.runners.pytest",
+    rust = "nvim-test.runners.cargo-test",
+    typescript = "nvim-test.runners.jest",
+  }
+}
+```

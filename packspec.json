@@ -1,0 +1,10 @@
+{
+  "package": "nvim-test",
+  "version": "0.0.0",
+  "source": "git://github.com/klen/nvim-test.git",
+  "description": {
+    "summary": "Test Runner for Neovim",
+    "homepage": "https://github.com/klen/nvim-test/",
+    "license": "MIT"
+  }
+}

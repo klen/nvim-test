@@ -1,10 +1,12 @@
 --
 return {
-  autocommands_create = true,
   commands_create = true,
   silent = false,
-  split = "vsplit",
+
   run = true,
+  split = "vsplit",
+  cmd = "terminal %s",
+  -- cmd = 'TermExec cmd="%s"',
 
   -- Supported runnners
   runners = {
