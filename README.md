@@ -1,4 +1,4 @@
-# nvim-test 0.0.2
+# nvim-test 0.0.3
 
 Test Runner for neovim
 
