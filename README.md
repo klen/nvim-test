@@ -49,7 +49,7 @@ require('nvim-test').setup {
   commands_create = true,   -- create commands (TestFile, TestLast, ...)
   silent = false,           -- less notifications
   run = true,               -- run test commands
-  split = 'vsplit',         -- split window before run (split|vsplit|nil)
+  split = 'vsplit',         -- split window before run ('split'|'vsplit'|false)
   cmd = 'terminal %s'       -- a vim command to run test
   runners = {               -- setup tests runners
     go = "nvim-test.runners.go-test",

@@ -4,10 +4,6 @@ local M = {
   config = vim.deepcopy(require "nvim-test.config"),
   notifier = nil,
 }
-local splits = {
-  vertical = "vsplit",
-  horizontal = "split",
-}
 
 -- Run tests
 ---
