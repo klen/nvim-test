@@ -1,0 +1,34 @@
+*nvim-test.txt*  nvim-test
+
+==============================================================================
+INTRODUCTION                                    *nvim-test-introduction*
+
+Test Runner for neovim
+
+------------------------------------------------------------------------------
+COMMANDS                                        *nvim-test-command*
+
+:TestNearest                                    *:TestNearest*
+	Run the test nearest to the cursor
+
+:TestFile                                       *:TestFile*
+	Run all tests in the current file
+
+:TestSuite                                      *:TestSuite*
+	Run the whole test suite
+
+:TestLast                                       *:TestLast*
+	Rerun the latest test
+
+------------------------------------------------------------------------------
+ABOUT                                            *nvim-test-about*
+
+Author:  Kirill Klenove <horneds@gmail.com>
+License: Same terms as Vim itself (see |license|)
+
+Grab the latest version or report a bug on GitHub:
+
+https://github.com/klen/nvim-test
+
+vim:tw=78:et:ft=help:norl:
+
