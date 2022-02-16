@@ -55,9 +55,11 @@ require('nvim-test').setup {
   run = true,               -- run test commands
   term = "terminal",        -- a terminal to run (terminal|toggleterm)
   termOpts = {
-    direction = "horizontal", -- terminal's direction (horizontal|vertical) (for toggleterm float also supported)
-    size = 20,                -- terminal's size
-    go_back = false,           -- return focus to original window after executing
+    direction = "horizontal", -- terminal's direction (horizontal|vertical|float)
+    width = 96,               -- terminal's width (for vertical|float)
+    height = 24,              -- terminal's height (for horizontal|float)
+    go_back = false,          -- return focus to original window after executing
+    stopinsert = true,        -- exit from insert mode
   },
   runners = {               -- setup tests runners
     go = "nvim-test.runners.go-test",

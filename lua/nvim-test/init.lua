@@ -48,15 +48,19 @@ function M.run_cmd(cmd)
   if not M.config.run then
     return
   end
-  -- if M.config.split then
-  --   vim.cmd(M.config.split)
-  -- end
-  -- vim.cmd(M.config.cmd:format(cmd))
   local supported, termExec = pcall(require, "nvim-test.terms." .. M.config.term)
   if not supported then
     return M.notifier:notify(string.format("Term: %s is not supported", M.config.term), "ErrorMsg")
   end
-  termExec(cmd, M.config.termOpts)
+  local opts = M.config.termOpts
+  vim.validate {
+    direction = { opts.direction, "string" },
+    width = { opts.width, "number" },
+    height = { opts.height, "number" },
+    go_back = { opts.go_back, "boolean" },
+    stopinsert = { opts.stopinsert, "boolean" },
+  }
+  termExec(cmd, opts)
 end
 
 -- Setup the plugin

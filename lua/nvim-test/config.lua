@@ -6,9 +6,11 @@ return {
   run = true,
   term = "terminal",
   termOpts = {
-    direction = "horizontal",
-    size = 20,
+    direction = "vertical",
+    width = 96,
+    height = 24,
     go_back = false,
+    stopinsert = true,
   },
 
   -- Supported runnners
