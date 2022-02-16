@@ -1,8 +1,12 @@
+<img src="https://neovim.io/logos/neovim-mark-flat.png" align="right" width="144" />
+
 # nvim-test 0.0.4
 
 Test Runner for neovim
 
 [![tests](https://github.com/klen/nvim-test/actions/workflows/tests.yml/badge.svg)](https://github.com/klen/nvim-test/actions/workflows/tests.yml)
+[![Awesome Neovim](https://awesome.re/badge-flat.svg)](https://github.com/rockerBOO/awesome-neovim)
+
 
 ## Features
 
