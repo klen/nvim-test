@@ -7,8 +7,6 @@ end
 local defaults = {
   num = 0, --- num number
   dir = "", --- dir string
-  direction = "vertical", --- direction string
-  go_back = true, --- go_back boolean whether or not to return to original window
   open = true, --- open boolean whether or not to open terminal window
 }
 
