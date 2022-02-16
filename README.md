@@ -59,7 +59,7 @@ require('nvim-test').setup {
     width = 96,               -- terminal's width (for vertical|float)
     height = 24,              -- terminal's height (for horizontal|float)
     go_back = false,          -- return focus to original window after executing
-    stopinsert = true,        -- exit from insert mode
+    stopinsert = false,       -- exit from insert mode
   },
   runners = {               -- setup tests runners
     go = "nvim-test.runners.go-test",

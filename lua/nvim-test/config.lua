@@ -10,7 +10,7 @@ return {
     width = 96,
     height = 24,
     go_back = false,
-    stopinsert = true,
+    stopinsert = false,
   },
 
   -- Supported runnners
