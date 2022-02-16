@@ -49,8 +49,12 @@ require('nvim-test').setup {
   commands_create = true,   -- create commands (TestFile, TestLast, ...)
   silent = false,           -- less notifications
   run = true,               -- run test commands
-  split = 'vsplit',         -- split window before run ('split'|'vsplit'|false)
-  cmd = 'terminal %s'       -- a vim command to run test
+  term = "terminal",        -- a terminal to run (terminal|toggleterm)
+  termOpts = {
+    direction = "horizontal", -- terminal's direction (horizontal|vertical) (for toggleterm float also supported)
+    size = 20,                -- terminal's size
+    go_back = false,           -- return focus to original window after executing
+  },
   runners = {               -- setup tests runners
     go = "nvim-test.runners.go-test",
     javascript = "nvim-test.runners.jest",

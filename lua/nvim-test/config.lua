@@ -4,9 +4,12 @@ return {
   silent = false,
 
   run = true,
-  split = "vsplit",
-  cmd = "terminal %s",
-  -- cmd = 'TermExec cmd="%s"',
+  term = "terminal",
+  termOpts = {
+    direction = "horizontal",
+    size = 20,
+    go_back = false,
+  },
 
   -- Supported runnners
   runners = {

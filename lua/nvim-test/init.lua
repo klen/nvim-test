@@ -45,12 +45,18 @@ end
 function M.run_cmd(cmd)
   vim.g.nvim_last = cmd
   M.notifier:onotify(cmd)
-  if M.config.run then
-    if M.config.split then
-      vim.cmd(M.config.split)
-    end
-    vim.cmd(M.config.cmd:format(cmd))
+  if not M.config.run then
+    return
   end
+  -- if M.config.split then
+  --   vim.cmd(M.config.split)
+  -- end
+  -- vim.cmd(M.config.cmd:format(cmd))
+  local supported, termExec = pcall(require, "nvim-test.terms." .. M.config.term)
+  if not supported then
+    return M.notifier:notify(string.format("Term: %s is not supported", M.config.term), "ErrorMsg")
+  end
+  termExec(cmd, M.config.termOpts)
 end
 
 -- Setup the plugin
