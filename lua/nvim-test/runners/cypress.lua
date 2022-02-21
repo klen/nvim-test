@@ -1,8 +1,8 @@
 local Runner = require "nvim-test.runner"
-local local_cmd = "./node_modules/.bin/cypress"
+local localCmd = "./node_modules/.bin/cypress"
 
 local cypress = Runner:init {
-  command = vim.fn.filereadable(local_cmd) ~= 0 and local_cmd or "cypress",
+  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "cypress",
 }
 
 function cypress:build_args(filename)

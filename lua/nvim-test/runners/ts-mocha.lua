@@ -1,9 +1,9 @@
 local Runner = require "nvim-test.runner"
 local jest = require "nvim-test.runners.jest"
-local local_cmd = "./node_modules/.bin/ts-mocha"
+local localCmd = "./node_modules/.bin/ts-mocha"
 
 local tsmocha = Runner:init {
-  command = vim.fn.filereadable(local_cmd) ~= 0 and local_cmd or "ts-mocha",
+  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "ts-mocha",
   queries = {
     typescript = jest.config.queries.javascript,
   },

@@ -1,5 +1,5 @@
 local Runner = require "nvim-test.runner"
-local local_cmd = "./node_modules/.bin/jest"
+local localCmd = "./node_modules/.bin/jest"
 
 local query = [[
   ((expression_statement
@@ -14,7 +14,7 @@ local query = [[
 ]]
 
 local jest = Runner:init {
-  command = vim.fn.filereadable(local_cmd) ~= 0 and local_cmd or "jest",
+  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "jest",
   queries = {
     typescript = query,
     javascript = query,
