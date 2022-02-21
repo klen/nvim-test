@@ -1,8 +1,9 @@
 local Runner = require "nvim-test.runner"
-local localCmd = vim.env.VIRTUAL_ENV .. "/bin/python"
+
+local cmd = vim.env.VIRTUAL_ENV and vim.env.VIRTUAL_ENV .. "/bin/python" or "python"
 
 local pyunit = Runner:init {
-  command = (vim.fn.filereadable(localCmd) ~= 0 and localCmd or "python") .. " -m unittest",
+  command = cmd .. " -m unittest",
   queries = {
     python = [[
       ; Class
