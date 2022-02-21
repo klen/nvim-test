@@ -2,6 +2,7 @@ local directionsMap = {
   vertical = "vsplit",
   horizontal = "split",
 }
+local buffers = {}
 
 return function(cmd, cfg)
   if cfg.direction == "float" then
@@ -24,7 +25,16 @@ return function(cmd, cfg)
   if cfg.direction == "horizontal" and cfg.height then
     split = cfg.height .. split
   end
+  if cfg.keep_one then
+    for pos, bufnr in ipairs(buffers) do
+      if vim.fn.bufexists(bufnr) > 0 then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+        table.remove(buffers, pos)
+      end
+    end
+  end
   vim.cmd("botright " .. split .. " | term " .. cmd)
+  table.insert(buffers, vim.api.nvim_get_current_buf())
   if cfg.stopinsert or cfg.go_back then
     vim.cmd "stopinsert!"
     vim.cmd "normal! G"

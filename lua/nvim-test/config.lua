@@ -11,6 +11,7 @@ return {
     height = 24,
     go_back = false,
     stopinsert = false,
+    keep_one = true,
   },
 
   -- Supported runnners
