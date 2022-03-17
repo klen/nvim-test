@@ -2,10 +2,8 @@
 --
 local Runner = require "nvim-test.runner"
 
-local cargotest = Runner:init {
-  command = "cargo test",
-  queries = {
-    rust = [[
+local cargotest = Runner:init({ command = "cargo test" }, {
+  rust = [[
       (
         (mod_item
           name: (identifier) @module-name)
@@ -15,8 +13,7 @@ local cargotest = Runner:init {
           name: (identifier) @function-name)
       @scope-root)
     ]],
-  },
-}
+})
 
 function cargotest:is_test(name)
   return string.match(name, "[Tt]est") and true

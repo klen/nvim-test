@@ -6,10 +6,11 @@ local Runner = {
 }
 Runner.__index = Runner
 
-function Runner:init(config)
+function Runner:init(config, queries)
   self = setmetatable({}, Runner)
+  self.queries = queries
   self.config = vim.tbl_extend("force", self.config, config)
-  for ft, query in pairs(self.config.queries or {}) do
+  for ft, query in pairs(queries or {}) do
     vim.treesitter.set_query(ft, "nvim-test", query)
   end
   return self

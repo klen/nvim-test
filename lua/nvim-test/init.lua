@@ -81,6 +81,7 @@ function M.setup(cfg)
     api.nvim_command "command! TestLast lua require'nvim-test'.run('last')<CR>"
     api.nvim_command "command! TestNearest lua require'nvim-test'.run('nearest')<CR>"
     api.nvim_command "command! TestSuite lua require'nvim-test'.run('suite')<CR>"
+    api.nvim_command "command! TestInfo lua require'nvim-test.info'()<CR>"
   end
 end
 

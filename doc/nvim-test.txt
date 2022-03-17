@@ -55,6 +55,9 @@ COMMANDS                                        *nvim-test-command*
 :TestLast                                       *:TestLast*
 	Rerun the latest test
 
+:TestInfo                                       *:TestInfo*
+	Show an information about plugin
+
 ------------------------------------------------------------------------------
 ABOUT                                            *nvim-test-about*
 

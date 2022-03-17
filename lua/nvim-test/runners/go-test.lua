@@ -2,15 +2,12 @@
 --
 local Runner = require "nvim-test.runner"
 
-local gotest = Runner:init {
-  command = "go test",
-  queries = {
-    go = [[
+local gotest = Runner:init({ command = "go test" }, {
+  go = [[
       ((function_declaration
         name: (identifier) @function-name) @scope-root)
     ]],
-  },
-}
+})
 
 function gotest:is_test(name)
   return string.match(name, "^Test") or string.match(name, "^Example")

@@ -41,6 +41,7 @@ The plugin defines the commands:
 - `TestFile` - run all tests in the current file
 - `TestSuite` - run the whole test suite
 - `TestLast` - run the last test
+- `TestInfo` - show an information about the plugin
 
 ## Setup
 

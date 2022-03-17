@@ -13,13 +13,12 @@ local query = [[
   @scope-root)
 ]]
 
-local jest = Runner:init {
+local jest = Runner:init({
   command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "jest",
-  queries = {
-    typescript = query,
-    javascript = query,
-  },
-}
+}, {
+  typescript = query,
+  javascript = query,
+})
 
 function jest:parse_name(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")

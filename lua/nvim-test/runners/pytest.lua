@@ -5,10 +5,10 @@ if vim.env.VIRTUAL_ENV and vim.fn.filereadable(vim.env.VIRTUAL_ENV .. "/bin/pyte
   cmd = vim.env.VIRTUAL_ENV .. "/bin/pytest"
 end
 
-local pytest = Runner:init {
+local pytest = Runner:init({
   command = cmd,
-  queries = {
-    python = [[
+}, {
+  python = [[
       ; Class
       ((class_definition
         name: (identifier) @class-name) @scope-root)
@@ -17,8 +17,7 @@ local pytest = Runner:init {
       ((function_definition
         name: (identifier) @function-name) @scope-root)
     ]],
-  },
-}
+})
 
 function pytest:is_test(name)
   return string.match(name, "[Tt]est") and true
