@@ -41,6 +41,7 @@ The plugin defines the commands:
 - `TestFile` - run all tests in the current file
 - `TestSuite` - run the whole test suite
 - `TestLast` - run the last test
+- `TestVisit` - open the last run test in the current buffer
 - `TestInfo` - show an information about the plugin
 
 ## Setup
@@ -72,4 +73,12 @@ require('nvim-test').setup {
     typescript = "nvim-test.runners.jest",
   }
 }
+```
+
+Setup a runner:
+```lua
+  require('nvim-test.runners.jest').setup {
+    command = "~/node_modules/.bin/jest",
+    args = " --collectCoverage=false ",
+  }
 ```

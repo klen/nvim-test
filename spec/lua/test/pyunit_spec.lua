@@ -11,36 +11,39 @@ describe("pyunit", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.equal("python -m unittest", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "python -m unittest")
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal("python -m unittest spec.lua.test.fixtures.test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "python -m unittest spec.lua.test.fixtures.test")
   end)
 
   it("run nearest function", function()
     helpers.view(filename, 4)
     vim.api.nvim_command "TestNearest"
-    assert.are.equal("python -m unittest spec.lua.test.fixtures.test.test_base", vim.g.nvim_last)
+    assert.are.equal(
+      vim.g.test_latest.cmd,
+      "python -m unittest spec.lua.test.fixtures.test.test_base"
+    )
   end)
 
   it("run nearest method", function()
     helpers.view(filename, 13)
     vim.api.nvim_command "TestNearest"
     assert.are.equal(
-      "python -m unittest spec.lua.test.fixtures.test.MyTest.test_method2",
-      vim.g.nvim_last
+      vim.g.test_latest.cmd,
+      "python -m unittest spec.lua.test.fixtures.test.MyTest.test_method2"
     )
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal("python -m unittest spec.lua.test.fixtures.test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "python -m unittest spec.lua.test.fixtures.test")
 
     vim.api.nvim_command "TestLast"
-    assert.are.equal("python -m unittest spec.lua.test.fixtures.test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "python -m unittest spec.lua.test.fixtures.test")
   end)
 end)

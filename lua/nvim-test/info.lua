@@ -1,4 +1,4 @@
-function open_window()
+local function open_window()
   local width = math.floor(vim.o.columns * 0.7)
   local height = math.floor(vim.o.lines * 0.7)
   local bufnr = vim.api.nvim_create_buf(false, true)
@@ -33,15 +33,17 @@ function open_window()
   return { win = win, bufnr = bufnr }
 end
 
-function print_table(t, indent)
+local function print_table(t, indent)
   local result = {}
-  indent = indent == nil and "" or indent
-  for key, value in pairs(t) do
-    if type(value) == "table" then
-      table.insert(result, indent .. key .. ": ")
-      vim.list_extend(result, print_table(value, indent .. "\t"))
-    else
-      table.insert(result, indent .. key .. ": " .. vim.inspect(value))
+  if t then
+    indent = indent == nil and "" or indent
+    for key, value in pairs(t) do
+      if type(value) == "table" then
+        table.insert(result, indent .. key .. ": ")
+        vim.list_extend(result, print_table(value, indent .. "\t"))
+      else
+        table.insert(result, indent .. key .. ": " .. vim.inspect(value))
+      end
     end
   end
   return result
@@ -52,28 +54,33 @@ return function()
   local filetype = vim.bo.filetype
   local window = open_window()
 
-  local lines = { "=============", "PLUGIN CONFIG", ">" }
-  vim.list_extend(lines, print_table(plugin.config, "\t"))
-  table.insert(lines, "")
+  local lines = {}
 
   if filetype then
-    vim.list_extend(lines, { "-------------------", "Detected filetype: *" .. filetype .. "*" })
-    local runner_module = plugin.config.runners[filetype]
+    vim.list_extend(lines, { "Detected filetype: *" .. filetype .. "*" })
+    local runner_module = plugin.runners[filetype]
     if runner_module then
       table.insert(lines, "Found test runner: *" .. runner_module .. "*")
       local _, runner = pcall(require, runner_module)
       if runner then
-        vim.list_extend(lines, { "", "Runner Config: >" })
+        vim.list_extend(lines, { "", "Runner Config:~", ">" })
         vim.list_extend(lines, print_table(runner.config, "\t"))
+        table.insert(lines, "<")
       end
     else
       table.insert(lines, "Test runner not found")
     end
   end
 
-  if vim.g.nvim_last then
-    vim.list_extend(lines, { "", "-------------------", "Last test: `" .. vim.g.nvim_last .. "`" })
+  if vim.g.test_latest then
+    vim.list_extend(lines, { "", "Latest test params:~", ">" })
+    vim.list_extend(lines, print_table(vim.g.test_latest, "\t"))
+    table.insert(lines, "<")
   end
+
+  vim.list_extend(lines, { "", "Plugin Config:~", ">" })
+  vim.list_extend(lines, print_table(plugin.config, "\t"))
+  table.insert(lines, "<")
 
   vim.api.nvim_buf_set_lines(window.bufnr, 0, -1, true, lines)
   vim.api.nvim_buf_set_option(window.bufnr, "modifiable", false)

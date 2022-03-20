@@ -8,9 +8,9 @@ Runner.__index = Runner
 
 function Runner:init(config, queries)
   self = setmetatable({}, Runner)
-  self.queries = queries
+  self.queries = queries or {}
   self.config = vim.tbl_extend("force", self.config, config)
-  for ft, query in pairs(queries or {}) do
+  for ft, query in pairs(self.queries) do
     vim.treesitter.set_query(ft, "nvim-test", query)
   end
   return self

@@ -9,27 +9,27 @@ describe("jest", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.equal("jest", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "jest")
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal("jest " .. filename, vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "jest " .. filename)
   end)
 
   it("run nearest function", function()
     helpers.view(filename, 4)
     vim.api.nvim_command "TestNearest"
-    assert.are.equal("jest " .. filename .. " -t 'jstest ns test1'", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "jest " .. filename .. " -t 'jstest ns test1'")
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal(vim.g.nvim_last, "jest " .. filename)
+    assert.are.equal(vim.g.test_latest.cmd, "jest " .. filename)
 
     vim.api.nvim_command "TestLast"
-    assert.are.equal(vim.g.nvim_last, "jest " .. filename)
+    assert.are.equal(vim.g.test_latest.cmd, "jest " .. filename)
   end)
 end)

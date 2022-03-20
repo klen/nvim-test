@@ -15,27 +15,27 @@ describe("gotest", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.equal("go test ./...", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "go test ./...")
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal("go test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "go test")
   end)
 
   it("run nearest function", function()
     helpers.view(filename, 6)
     vim.api.nvim_command "TestNearest"
-    assert.are.equal("go test -run 'TestNumbers$' ", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "go test -run 'TestNumbers$' ")
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.equal("go test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "go test")
 
     vim.api.nvim_command "TestLast"
-    assert.are.equal("go test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "go test")
   end)
 end)

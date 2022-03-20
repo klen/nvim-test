@@ -16,8 +16,8 @@ local query = [[
 local jest = Runner:init({
   command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "jest",
 }, {
-  typescript = query,
   javascript = query,
+  typescript = query,
 })
 
 function jest:parse_name(name)

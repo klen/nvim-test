@@ -55,6 +55,9 @@ COMMANDS                                        *nvim-test-command*
 :TestLast                                       *:TestLast*
 	Rerun the latest test
 
+:TestVisit                                      *:TestVisit*
+	Open the last run test in the current buffer
+
 :TestInfo                                       *:TestInfo*
 	Show an information about plugin
 

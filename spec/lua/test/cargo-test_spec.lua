@@ -13,36 +13,36 @@ describe("cargotest", function()
   it("run suite", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestSuite"
-    assert.are.equal("cargo test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test")
   end)
 
   it("run file", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.equal("cargo test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test")
 
     helpers.view "src/somemod.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.equal("cargo test 'somemod::'", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test 'somemod::'")
 
     helpers.view "src/nested/mod.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.equal("cargo test 'nested::'", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test 'nested::'")
   end)
 
   it("run nearest function", function()
     helpers.view("src/lib.rs", 4)
     assert.exists_pattern "first_test"
     vim.api.nvim_command "TestNearest"
-    assert.are.equal("cargo test tests::first_test -- --exact", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test tests::first_test -- --exact")
   end)
 
   it("run latest", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.equal("cargo test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test")
 
     vim.api.nvim_command "TestLast"
-    assert.are.equal("cargo test", vim.g.nvim_last)
+    assert.are.equal(vim.g.test_latest.cmd, "cargo test")
   end)
 end)
