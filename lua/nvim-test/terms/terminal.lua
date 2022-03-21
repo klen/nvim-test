@@ -8,11 +8,11 @@ return function(cmd, cfg)
   if cfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_open_win(bufnr, true, {
-      row = math.ceil(vim.o.lines - cfg.size) / 2 - 1,
-      col = math.ceil(vim.o.columns - cfg.size) / 2 - 1,
+      row = math.ceil(vim.o.lines - cfg.height) / 2 - 1,
+      col = math.ceil(vim.o.columns - cfg.width) / 2 - 1,
       relative = "editor",
-      width = cfg.size,
-      height = cfg.size,
+      width = cfg.width,
+      height = cfg.height,
       style = "minimal",
       border = "single",
     })
