@@ -19,8 +19,10 @@ function gotest:build_args(filename, opts)
     return args .. " ./..."
   end
 
-  local path = "./" .. vim.fn.fnamemodify(filename, ":.:h")
-  args = args .. ((path == "./.") and "" or (path .. "/..."))
+  local path = vim.fn.fnamemodify(filename, ":.:h")
+  if path ~= "." then
+    args = string.format("%s ./%s/...", args, path)
+  end
   if opts.tests then
     args = string.format(" -run %s ", vim.fn.shellescape(opts.tests[1] .. "$")) .. args
   end
