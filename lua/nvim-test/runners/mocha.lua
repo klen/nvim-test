@@ -10,7 +10,7 @@ local mocha = Runner:init({
 })
 
 function mocha:parse_name(name)
-  return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
+  return jest:parse_name(name)
 end
 
 function mocha:build_test_args(args, tests)

@@ -30,12 +30,6 @@ describe("nvim-test", function()
     assert.is_true(vim.fn.exists ":TestVisit" > 0)
   end)
 
-  it("test unkwnown", function()
-    helpers.view "unkwnown"
-    vim.api.nvim_command "TestSuite"
-    assert.exists_message "is not found"
-  end)
-
   it("test visit", function()
     local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.lua", ":p")
     helpers.view(filename)

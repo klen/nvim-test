@@ -1,10 +1,9 @@
-local Notifier = require "nvim-test.notify"
+local notifier = require "nvim-test.notify"
 local api = vim.api
 local suite_runner
 local Runner = require "nvim-test.runner"
 local M = {
   config = vim.deepcopy(require "nvim-test.config"),
-  notifier = nil,
   runners = require "nvim-test.runners",
 }
 
@@ -24,12 +23,12 @@ function M.run(scope)
     suite_runner = runner
     local opts = {}
     local filename = nil
-    if scope == "nearest" then
-      opts.tests = runner:find_tests(filetype)
-    end
 
     if scope ~= "suite" then
-      filename = vim.fn.expand "%:p"
+      filename = runner.config.find_spec(vim.fn.expand "%:p")
+    end
+    if scope == "nearest" then
+      opts.tests = runner:find_tests(filetype)
     end
 
     local cmd = runner:build_cmd(filename, opts)
@@ -48,7 +47,7 @@ end
 function M.run_last()
   local latest = vim.g.test_latest
   if not latest then
-    return M.notifier:notify("No tests were run so far", "ErrorMsg")
+    return notifier:notify("No tests were run so far", 3)
   end
   return M.run_cmd(latest.cmd, latest.env)
 end
@@ -65,7 +64,7 @@ function M.get_runner(filetype, default)
   end
   local runner = default
   if not runner then
-    M.notifier:notify(string.format("Test runner for `%s` is not found", filetype), "ErrorMsg")
+    notifier:notify(string.format("Test runner for `%s` is not found", filetype), 4)
   end
   return runner
 end
@@ -77,7 +76,7 @@ function M.visit()
     local args = opts.line and string.format("+%s", opts.line) or ""
     return api.nvim_command(string.format("edit %s%s", opts.filename, args))
   end
-  return M.notifier:notify("No tests were run so far", "ErrorMsg")
+  return notifier:notify("No tests were run so far", 3)
 end
 
 --- Run the given command
@@ -85,13 +84,13 @@ end
 ---@param cmd table: a command to run
 ---@param env table: an env
 function M.run_cmd(cmd, env)
-  M.notifier:onotify(table.concat(cmd, " "))
+  notifier:log(table.concat(cmd, " "))
   if not M.config.run then
     return
   end
   local supported, termExec = pcall(require, "nvim-test.terms." .. M.config.term)
   if not supported then
-    return M.notifier:notify(string.format("Term: %s is not supported", M.config.term), "ErrorMsg")
+    return notifier:notify(string.format("Term: %s is not supported", M.config.term), 4)
   end
   local opts = M.config.termOpts
   vim.validate {
@@ -120,8 +119,8 @@ function M.setup(cfg)
   -- Reset latest
   vim.g.test_latest = nil
 
-  -- Initialize tools
-  M.notifier = Notifier:init(M.config.silent)
+  -- Setup notifies
+  notifier:setup(M.config.silent)
 
   -- Create commands
   if M.config.commands_create then

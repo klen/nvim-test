@@ -2,27 +2,36 @@ local Notifier = {}
 Notifier.__index = Notifier
 
 --Initialize hash helper
----@param silent boolean: is silent mode enabled
 ---@returns Notifier
-function Notifier:init(silent)
+function Notifier:init()
   self = {}
   setmetatable(self, Notifier)
-  self.silent = silent
+  self.silent = false
   self.prefix = "[nvim-test]: "
   return self
 end
 
+---@param silent boolean: is silent mode enabled
+function Notifier:setup(silent)
+  self.silent = silent
+  return self
+end
+
 --Send notify
-function Notifier:notify(msg, hl)
-  hl = hl or "ErrorMsg"
-  vim.api.nvim_echo({ { self.prefix .. msg, hl } }, true, {})
+function Notifier:notify(msg, level)
+  vim.notify(self.prefix .. msg, level or 2)
 end
 
 --Send optional notify
-function Notifier:onotify(msg, hl)
+function Notifier:onotify(msg, level)
   if not self.silent then
-    self:notify(msg, hl)
+    self:notify(msg, level)
   end
+end
+
+-- Log a message
+function Notifier:log(msg)
+  vim.api.nvim_echo({ { self.prefix .. msg } }, true, {})
 end
 
 --Ask for a confirmation
@@ -31,4 +40,4 @@ function Notifier:confirm(msg, choices)
   return choice
 end
 
-return Notifier
+return Notifier:init()

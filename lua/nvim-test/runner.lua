@@ -2,9 +2,13 @@
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
 
+local find_spec = function(filename)
+  return filename
+end
+
 ---@class Runner
 local Runner = {
-  config = { args = {} },
+  config = { args = {}, find_spec = find_spec },
 }
 Runner.__index = Runner
 

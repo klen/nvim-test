@@ -1,20 +1,19 @@
 local Runner = require "nvim-test.runner"
-local jest = require "nvim-test.runners.jest"
+local mocha = require "nvim-test.runners.mocha"
 local localCmd = "./node_modules/.bin/ts-mocha"
 
 local tsmocha = Runner:init({
   command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "ts-mocha",
 }, {
-  typescript = jest.queries.javascript,
+  typescript = mocha.queries.typescript,
 })
 
 function tsmocha:parse_name(name)
-  return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
+  return mocha:parse_name(name)
 end
 
 function tsmocha:build_test_args(args, tests)
-  table.insert(args, "-f")
-  table.insert(args, table.concat(tests, " "))
+  return mocha:build_test_args(args, tests)
 end
 
 return tsmocha

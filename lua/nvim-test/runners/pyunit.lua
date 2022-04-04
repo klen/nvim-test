@@ -1,22 +1,15 @@
 local Runner = require "nvim-test.runner"
+local pytest = require "nvim-test.runners.pytest"
 
 local pyunit = Runner:init({
   command = vim.env.VIRTUAL_ENV and vim.env.VIRTUAL_ENV .. "/bin/python" or "python",
   args = { "-m", "unittest" },
 }, {
-  python = [[
-      ; Class
-      ((class_definition
-        name: (identifier) @class-name) @scope-root)
-
-      ; Function
-      ((function_definition
-        name: (identifier) @function-name) @scope-root)
-    ]],
+  python = pytest.queries.python,
 })
 
 function pyunit:is_test(name)
-  return string.match(name, "[Tt]est") and true
+  return pytest:is_test(name)
 end
 
 function pyunit:build_args(args, filename, opts)

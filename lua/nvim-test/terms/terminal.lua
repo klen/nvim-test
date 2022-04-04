@@ -1,3 +1,4 @@
+local notifier = require "nvim-test.notify"
 local directionsMap = {
   vertical = "vsplit",
   horizontal = "split",
@@ -10,6 +11,7 @@ local exec = function(cmd, env, cfg)
     on_exit = function(_, status)
       if cfg.stopinsert == "auto" and status ~= 0 then
         vim.cmd "stopinsert!"
+        notifier:onotify("Tests are failed", 3)
       end
     end,
   }
