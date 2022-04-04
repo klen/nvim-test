@@ -4,6 +4,7 @@ return {
   silent = false,
   run = true,
   term = "terminal",
+  filename_modifier = ":.",
   termOpts = {
     direction = "vertical",
     width = 96,

@@ -25,7 +25,9 @@ function M.run(scope)
     local filename = nil
 
     if scope ~= "suite" then
-      filename = runner.config.find_spec(vim.fn.expand "%:p")
+      filename = runner.config.find_spec(
+        vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
+      )
     end
     if scope == "nearest" then
       opts.tests = runner:find_tests(filetype)

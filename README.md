@@ -56,6 +56,7 @@ require('nvim-test').setup {
   silent = false,           -- less notifications
   run = true,               -- run test commands
   term = "terminal",        -- a terminal to run (terminal|toggleterm)
+  filename_modifier = ":."  -- modify filename before tests run (:h filename-modifiers)
   termOpts = {
     direction = "vertical", -- terminal's direction (horizontal|vertical|float)
     width = 96,             -- terminal's width (for vertical|float)
@@ -81,5 +82,7 @@ Setup a runner:
     command = "~/node_modules/.bin/jest", -- a command to run the test runner
     args = { "--collectCoverage=false" }, -- default arguments
     env = { CUSTOM_VAR = 'value' },       -- custom environment variables
+
+    filename_modifier = nil,              -- modify filename before tests run (:h filename-modifiers)
   }
 ```

@@ -6,7 +6,7 @@ describe("mocha", function()
   end)
   after_each(helpers.after_each)
 
-  local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.js", ":p")
+  local filename = "spec/lua/test/fixtures/test.js"
 
   it("run suite", function()
     helpers.view(filename)

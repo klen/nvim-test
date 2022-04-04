@@ -8,7 +8,7 @@ describe("vusted", function()
 
   require("nvim-test").setup { runners = { lua = "nvim-test.runners.vusted" } }
 
-  local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.lua", ":p")
+  local filename = "spec/lua/test/fixtures/test.lua"
 
   it("run suite", function()
     helpers.view(filename)

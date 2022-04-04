@@ -6,7 +6,7 @@ describe("tsmocha", function()
   end)
   after_each(helpers.after_each)
 
-  local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.ts", ":p")
+  local filename = "spec/lua/test/fixtures/test.ts"
 
   it("run suite", function()
     helpers.view(filename)

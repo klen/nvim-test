@@ -40,7 +40,7 @@ describe("nvim-test", function()
   end)
 
   it("test suite", function()
-    local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.lua", ":p")
+    local filename = "spec/lua/test/fixtures/test.lua"
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
     helpers.view "unkwnown"

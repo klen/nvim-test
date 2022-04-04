@@ -4,7 +4,7 @@ describe("pytest", function()
   before_each(helpers.before_each)
   after_each(helpers.after_each)
 
-  local filename = vim.fn.fnamemodify("spec/lua/test/fixtures/test.py", ":p")
+  local filename = "spec/lua/test/fixtures/test.py"
 
   it("run suite", function()
     helpers.view(filename)
