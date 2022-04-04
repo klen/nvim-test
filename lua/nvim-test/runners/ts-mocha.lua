@@ -12,8 +12,9 @@ function tsmocha:parse_name(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
 end
 
-function tsmocha:build_test_args(tests)
-  return string.format(" -f '%s'", table.concat(tests, " "))
+function tsmocha:build_test_args(args, tests)
+  table.insert(args, "-f")
+  table.insert(args, table.concat(tests, " "))
 end
 
 return tsmocha

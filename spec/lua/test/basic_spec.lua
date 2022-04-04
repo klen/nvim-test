@@ -51,6 +51,6 @@ describe("nvim-test", function()
     vim.api.nvim_command "TestFile"
     helpers.view "unkwnown"
     vim.api.nvim_command "TestSuite"
-    assert.are.equal(vim.g.test_latest.cmd, "busted")
+    assert.are.same(vim.g.test_latest.cmd, { "busted" })
   end)
 end)

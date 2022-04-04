@@ -1,0 +1,7 @@
+[package]
+name = "nvim-test"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+tokio = "1.17.0"

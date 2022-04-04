@@ -2,7 +2,7 @@
 --
 local Runner = require "nvim-test.runner"
 
-local gotest = Runner:init({ command = "go test" }, {
+local gotest = Runner:init({ command = "go", args = { "test", "-v" } }, {
   go = [[
       ((function_declaration
         name: (identifier) @function-name) @scope-root)
@@ -13,20 +13,19 @@ function gotest:is_test(name)
   return string.match(name, "^Test") or string.match(name, "^Example")
 end
 
-function gotest:build_args(filename, opts)
-  local args = self.config.args
-  if not filename then
-    return args .. " ./..."
+function gotest:build_args(args, filename, opts)
+  if filename then
+    local path = vim.fn.fnamemodify(filename, ":.:h")
+    if path ~= "." then
+      table.insert(args, string.format("./%s/...", path))
+    end
+    if opts.tests and #opts.tests > 0 then
+      table.insert(args, "-run")
+      table.insert(args, opts.tests[1] .. "$")
+    end
+  else
+    table.insert(args, "./...")
   end
-
-  local path = vim.fn.fnamemodify(filename, ":.:h")
-  if path ~= "." then
-    args = string.format("%s ./%s/...", args, path)
-  end
-  if opts.tests then
-    args = string.format(" -run %s ", vim.fn.shellescape(opts.tests[1] .. "$")) .. args
-  end
-  return args
 end
 
 return gotest

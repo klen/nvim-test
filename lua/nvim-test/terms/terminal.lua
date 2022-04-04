@@ -4,6 +4,16 @@ local directionsMap = {
 }
 local buffers = {}
 
+local exec = function(cmd, cfg)
+  return vim.fn.termopen(cmd, {
+    on_exit = function(_, status)
+      if cfg.stopinsert == "auto" and status ~= 0 then
+        vim.cmd "stopinsert!"
+      end
+    end,
+  })
+end
+
 return function(cmd, cfg)
   if cfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
@@ -16,8 +26,9 @@ return function(cmd, cfg)
       style = "minimal",
       border = "single",
     })
-    return vim.cmd("term " .. cmd)
+    return exec(cmd, cfg)
   end
+
   local split = directionsMap[cfg.direction]
   if cfg.direction == "vertical" and cfg.width then
     split = cfg.width .. split
@@ -25,6 +36,8 @@ return function(cmd, cfg)
   if cfg.direction == "horizontal" and cfg.height then
     split = cfg.height .. split
   end
+
+  -- Clean buffers
   if cfg.keep_one then
     for pos, bufnr in ipairs(buffers) do
       if vim.fn.bufexists(bufnr) > 0 then
@@ -33,11 +46,13 @@ return function(cmd, cfg)
       end
     end
   end
-  vim.cmd("botright " .. split .. " | term " .. cmd)
+
+  vim.cmd(string.format("botright %s new", split))
+  exec(cmd, cfg)
+
   table.insert(buffers, vim.api.nvim_get_current_buf())
-  if cfg.stopinsert or cfg.go_back then
+  if cfg.stopinsert == true or cfg.go_back then
     vim.cmd "stopinsert!"
-    vim.cmd "normal! G"
   end
   if cfg.go_back then
     vim.cmd "wincmd p"

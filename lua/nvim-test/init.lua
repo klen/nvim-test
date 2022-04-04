@@ -1,6 +1,7 @@
 local Notifier = require "nvim-test.notify"
 local api = vim.api
 local suite_runner
+local Runner = require "nvim-test.runner"
 local M = {
   config = vim.deepcopy(require "nvim-test.config"),
   notifier = nil,
@@ -45,7 +46,8 @@ function M.run_last()
   return M.run_cmd(vim.g.test_latest.cmd)
 end
 
---- Get a runner by the given filetype
+---Get a runner by the given filetype
+---@return Runner runner
 function M.get_runner(filetype, default)
   local runner_module = M.runners[filetype]
   if runner_module then
@@ -73,9 +75,9 @@ end
 
 --- Run the given command
 ---
----@param cmd string: a command to run
+---@param cmd table: a command to run
 function M.run_cmd(cmd)
-  M.notifier:onotify(cmd)
+  M.notifier:onotify(table.concat(cmd, " "))
   if not M.config.run then
     return
   end
@@ -89,7 +91,7 @@ function M.run_cmd(cmd)
     width = { opts.width, "number" },
     height = { opts.height, "number" },
     go_back = { opts.go_back, "boolean" },
-    stopinsert = { opts.stopinsert, "boolean" },
+    -- stopinsert = { opts.stopinsert, "boolean" },
   }
   termExec(cmd, opts)
 end

@@ -1,3 +1,6 @@
+#![warn(rust_2018_idioms)]
+#![cfg(feature = "full")]
+
 mod tests {
     #[test]
     fn first_test () {

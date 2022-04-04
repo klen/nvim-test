@@ -13,8 +13,9 @@ function mocha:parse_name(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
 end
 
-function mocha:build_test_args(tests)
-  return string.format(" -f '%s'", table.concat(tests, " "))
+function mocha:build_test_args(args, tests)
+  table.insert(args, "-f")
+  table.insert(args, table.concat(tests, " "))
 end
 
 return mocha

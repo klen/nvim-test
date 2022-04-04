@@ -1,5 +1,7 @@
 local M = {}
 
+---Get a text from the given treesitter node
+---@return string s a text
 function M.get_node_text(node, bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   local start_row, start_col, _, end_col = node:range()
@@ -23,6 +25,18 @@ function M.get_node_at_cursor()
       return node
     end
   end
+end
+
+---Concat tables
+--
+---@param r table a target table
+---@param t table a table
+---@return table r a target table
+function M.concat(r, t)
+  for _, value in ipairs(t) do
+    table.insert(r, value)
+  end
+  return r
 end
 
 return M

@@ -23,8 +23,8 @@ function pytest:is_test(name)
   return string.match(name, "[Tt]est") and true
 end
 
-function pytest:build_test_args(tests)
-  return "::" .. table.concat(tests, "::")
+function pytest:build_test_args(args, tests)
+  args[#args] = args[#args] .. "::" .. table.concat(tests, "::")
 end
 
 return pytest

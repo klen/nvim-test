@@ -9,7 +9,7 @@ return {
     width = 96,
     height = 24,
     go_back = false,
-    stopinsert = false,
+    stopinsert = "auto",
     keep_one = true,
   },
 }

@@ -2,3 +2,4 @@
 /_
 /nvim-treesitter
 /todo.txt
+/spec/lua/test/fixtures/**/target/

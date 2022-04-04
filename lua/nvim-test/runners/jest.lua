@@ -24,8 +24,9 @@ function jest:parse_name(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
 end
 
-function jest:build_test_args(tests)
-  return string.format(" -t '%s'", table.concat(tests, " "))
+function jest:build_test_args(args, tests)
+  table.insert(args, "-t")
+  table.insert(args, table.concat(tests, " "))
 end
 
 return jest

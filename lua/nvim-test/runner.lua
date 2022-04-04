@@ -1,8 +1,10 @@
 ---@diagnostic disable: unused-local
+local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
 
+---@class Runner
 local Runner = {
-  config = { args = "" },
+  config = { args = {} },
 }
 Runner.__index = Runner
 
@@ -52,23 +54,29 @@ function Runner:is_test(name)
   return true
 end
 
+-- Build command list
+---
+---@return table cmd command list
 function Runner:build_cmd(filename, opts)
-  return string.format("%s%s", self.config.command, self:build_args(filename, opts or {}))
-end
-
-function Runner:build_args(filename, opts)
-  local args = self.config.args
-  if filename then
-    args = args .. " " .. filename
-  end
-  if opts.tests and #opts.tests > 0 then
-    args = args .. self:build_test_args(opts.tests)
-  end
+  local args = utils.concat({}, self.config.args)
+  self:build_args(args, filename, opts or {})
+  table.insert(args, 1, self.config.command)
   return args
 end
 
-function Runner:build_test_args(tests)
-  return ""
+-- Build arguments
+---
+---@return table args arguments list
+function Runner:build_args(args, filename, opts)
+  if filename then
+    table.insert(args, filename)
+  end
+  if opts.tests and #opts.tests > 0 then
+    self:build_test_args(args, opts.tests)
+  end
 end
+
+---@return table test_args test arguments list
+function Runner:build_test_args(args, tests) end
 
 return Runner
