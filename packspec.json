@@ -1,6 +1,6 @@
 {
   "package": "nvim-test",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "source": "git://github.com/klen/nvim-test.git",
   "description": {
     "summary": "Test Runner for Neovim",
