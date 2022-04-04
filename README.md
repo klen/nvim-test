@@ -61,7 +61,7 @@ require('nvim-test').setup {
     width = 96,             -- terminal's width (for vertical|float)
     height = 24,            -- terminal's height (for horizontal|float)
     go_back = false,        -- return focus to original window after executing
-    stopinsert = false,     -- exit from insert mode (true|false|"auto")
+    stopinsert = "auto",    -- exit from insert mode (true|false|"auto")
     keep_one = true,        -- only for term 'terminal', use only one buffer for testing
   },
   runners = {               -- setup tests runners
