@@ -10,7 +10,7 @@ local defaults = {
   open = true, --- open boolean whether or not to open terminal window
 }
 
-return function(cmd, cfg)
+return function(cmd, _, cfg)
   cfg = vim.tbl_deep_extend("force", defaults, cfg)
   local size = cfg.direction == "vertical" and cfg.width or cfg.height
   toggleterm.exec(cmd, cfg.num, cfg.size or size, cfg.dir, cfg.direction, cfg.go_back, cfg.open)

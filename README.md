@@ -80,5 +80,6 @@ Setup a runner:
   require('nvim-test.runners.jest').setup {
     command = "~/node_modules/.bin/jest",
     args = { "--collectCoverage=false" },
+    env = { CUSTOM_VAR = 'value' },
   }
 ```

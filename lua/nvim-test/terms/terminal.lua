@@ -3,18 +3,23 @@ local directionsMap = {
   horizontal = "split",
 }
 local buffers = {}
+local next = next
 
-local exec = function(cmd, cfg)
-  return vim.fn.termopen(cmd, {
+local exec = function(cmd, env, cfg)
+  local opts = {
     on_exit = function(_, status)
       if cfg.stopinsert == "auto" and status ~= 0 then
         vim.cmd "stopinsert!"
       end
     end,
-  })
+  }
+  if env and next(env) then
+    opts.env = env
+  end
+  return vim.fn.termopen(cmd, opts)
 end
 
-return function(cmd, cfg)
+return function(cmd, env, cfg)
   if cfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_open_win(bufnr, true, {
@@ -26,7 +31,7 @@ return function(cmd, cfg)
       style = "minimal",
       border = "single",
     })
-    return exec(cmd, cfg)
+    return exec(cmd, env, cfg)
   end
 
   local split = directionsMap[cfg.direction]
@@ -48,7 +53,7 @@ return function(cmd, cfg)
   end
 
   vim.cmd(string.format("botright %s new", split))
-  exec(cmd, cfg)
+  exec(cmd, env, cfg)
 
   table.insert(buffers, vim.api.nvim_get_current_buf())
   if cfg.stopinsert == true or cfg.go_back then
