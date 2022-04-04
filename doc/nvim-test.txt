@@ -35,7 +35,7 @@ Setup the plugin (default values): >
 
 Setup a runner: >
 
-  require('nvim-test.runners.jest').setup {
+  require('nvim-test.runners.jest'):setup {
     command = "~/node_modules/.bin/jest",
     args = { "--collectCoverage=false" },
     env = { CUSTOM_VAR = 'value' },
@@ -71,7 +71,7 @@ Cargotest runner may find the nearest crate root.
 
 Enable `package` option: >
 
-  require('nvim-test.runners.cargo-test').setup { package = true }
+  require('nvim-test.runners.cargo-test'):setup { package = true }
 
 
 ------------------------------------------------------------------------------

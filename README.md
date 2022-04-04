@@ -77,7 +77,7 @@ require('nvim-test').setup {
 
 Setup a runner:
 ```lua
-  require('nvim-test.runners.jest').setup {
+  require('nvim-test.runners.jest'):setup {
     command = "~/node_modules/.bin/jest", -- a command to run the test runner
     args = { "--collectCoverage=false" }, -- default arguments
     env = { CUSTOM_VAR = 'value' },       -- custom environment variables
