@@ -8,7 +8,13 @@ end
 
 ---@class Runner
 local Runner = {
-  config = { args = {}, find_spec = find_spec },
+  config = {
+    args = {},
+    find_spec = find_spec,
+
+    filename_modifier = nil,
+    working_directory = nil,
+  },
 }
 Runner.__index = Runner
 

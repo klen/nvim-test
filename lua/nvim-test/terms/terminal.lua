@@ -1,4 +1,5 @@
 local notifier = require "nvim-test.notify"
+
 local directionsMap = {
   vertical = "vsplit",
   horizontal = "split",
@@ -6,46 +7,49 @@ local directionsMap = {
 local buffers = {}
 local next = next
 
-local exec = function(cmd, env, cfg)
+local exec = function(cmd, cfg, termCfg)
   local opts = {
     on_exit = function(_, status)
-      if cfg.stopinsert == "auto" and status ~= 0 then
+      if termCfg.stopinsert == "auto" and status ~= 0 then
         vim.cmd "stopinsert!"
         notifier:onotify("Tests are failed", 3)
       end
     end,
   }
-  if env and next(env) then
-    opts.env = env
+  if cfg.env and next(cfg.env) then
+    opts.env = cfg.env
+  end
+  if cfg.working_directory and #cfg.working_directory > 0 then
+    opts.cwd = cfg.working_directory
   end
   return vim.fn.termopen(cmd, opts)
 end
 
-return function(cmd, env, cfg)
-  if cfg.direction == "float" then
+return function(cmd, cfg, termCfg)
+  if termCfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_open_win(bufnr, true, {
-      row = math.ceil(vim.o.lines - cfg.height) / 2 - 1,
-      col = math.ceil(vim.o.columns - cfg.width) / 2 - 1,
+      row = math.ceil(vim.o.lines - termCfg.height) / 2 - 1,
+      col = math.ceil(vim.o.columns - termCfg.width) / 2 - 1,
       relative = "editor",
-      width = cfg.width,
-      height = cfg.height,
+      width = termCfg.width,
+      height = termCfg.height,
       style = "minimal",
       border = "single",
     })
-    return exec(cmd, env, cfg)
+    return exec(cmd, cfg, termCfg)
   end
 
-  local split = directionsMap[cfg.direction]
-  if cfg.direction == "vertical" and cfg.width then
-    split = cfg.width .. split
+  local split = directionsMap[termCfg.direction]
+  if termCfg.direction == "vertical" and termCfg.width then
+    split = termCfg.width .. split
   end
-  if cfg.direction == "horizontal" and cfg.height then
-    split = cfg.height .. split
+  if termCfg.direction == "horizontal" and termCfg.height then
+    split = termCfg.height .. split
   end
 
   -- Clean buffers
-  if cfg.keep_one then
+  if termCfg.keep_one then
     for pos, bufnr in ipairs(buffers) do
       if vim.fn.bufexists(bufnr) > 0 then
         vim.api.nvim_buf_delete(bufnr, { force = true })
@@ -55,13 +59,13 @@ return function(cmd, env, cfg)
   end
 
   vim.cmd(string.format("botright %s new", split))
-  exec(cmd, env, cfg)
+  exec(cmd, cfg, termCfg)
 
   table.insert(buffers, vim.api.nvim_get_current_buf())
-  if cfg.stopinsert == true or cfg.go_back then
+  if termCfg.stopinsert == true or termCfg.go_back then
     vim.cmd "stopinsert!"
   end
-  if cfg.go_back then
+  if termCfg.go_back then
     vim.cmd "wincmd p"
   end
 end

@@ -10,11 +10,19 @@ local defaults = {
   open = true, --- open boolean whether or not to open terminal window
 }
 
-return function(cmd, _, cfg)
-  cfg = vim.tbl_deep_extend("force", defaults, cfg)
-  local size = cfg.direction == "vertical" and cfg.width or cfg.height
-  toggleterm.exec(cmd, cfg.num, cfg.size or size, cfg.dir, cfg.direction, cfg.go_back, cfg.open)
-  if cfg.stopinsert then
+return function(cmd, _, termCfg)
+  termCfg = vim.tbl_deep_extend("force", defaults, termCfg)
+  local size = termCfg.direction == "vertical" and termCfg.width or termCfg.height
+  toggleterm.exec(
+    cmd,
+    termCfg.num,
+    termCfg.size or size,
+    termCfg.dir,
+    termCfg.direction,
+    termCfg.go_back,
+    termCfg.open
+  )
+  if termCfg.stopinsert then
     vim.cmd "normal! G"
     vim.cmd "stopinsert!"
   end

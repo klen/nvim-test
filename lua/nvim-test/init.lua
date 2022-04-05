@@ -34,14 +34,13 @@ function M.run(scope)
     end
 
     local cmd = runner:build_cmd(filename, opts)
-    local env = runner.config.env
     vim.g.test_latest = {
       cmd = cmd,
-      env = env,
+      cfg = runner.config,
       filename = filename,
       line = api.nvim_win_get_cursor(0)[0],
     }
-    return M.run_cmd(cmd, env)
+    return M.run_cmd(cmd, runner.config)
   end
 end
 
@@ -51,7 +50,7 @@ function M.run_last()
   if not latest then
     return notifier:notify("No tests were run so far", 3)
   end
-  return M.run_cmd(latest.cmd, latest.env)
+  return M.run_cmd(latest.cmd, latest.cfg)
 end
 
 ---Get a runner by the given filetype
@@ -84,8 +83,8 @@ end
 --- Run the given command
 ---
 ---@param cmd table: a command to run
----@param env table: an env
-function M.run_cmd(cmd, env)
+---@param cfg table: a runner's config
+function M.run_cmd(cmd, cfg)
   notifier:log(table.concat(cmd, " "))
   if not M.config.run then
     return
@@ -102,7 +101,7 @@ function M.run_cmd(cmd, env)
     go_back = { opts.go_back, "boolean" },
     -- stopinsert = { opts.stopinsert, "boolean" },
   }
-  return termExec(cmd, env, opts)
+  return termExec(cmd, cfg, opts)
 end
 
 -- Setup the plugin

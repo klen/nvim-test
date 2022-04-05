@@ -84,5 +84,6 @@ Setup a runner:
     env = { CUSTOM_VAR = 'value' },       -- custom environment variables
 
     filename_modifier = nil,              -- modify filename before tests run (:h filename-modifiers)
+    working_directory = nil,              -- set working directory (cwd by default)
   }
 ```
