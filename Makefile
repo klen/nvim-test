@@ -6,7 +6,7 @@ test t: nvim-treesitter
 	@echo $(CURDIR)
 	vusted \
 		--shuffle --lpath="./?.lua;./?/?.lua;./?/init.lua" \
-		--helper=$(CURDIR)/spec/lua/conftest.lua
+		--helper=$(CURDIR)/spec/conftest.lua
 .PHONY: test t
 
 RELEASE ?= patch

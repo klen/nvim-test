@@ -1,16 +1,17 @@
 local Runner = require "nvim-test.runner"
 local jest = require "nvim-test.runners.jest"
-local localCmd = "./node_modules/.bin/mocha"
 
 local mocha = Runner:init({
-  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "mocha",
+  command = { "./node_modules/.bin/mocha", "mocha" },
+  file_pattern = "\\v(tests?/.*|test)\\.(js|jsx|coffee)$",
+  find_files = { "{name}.test.{ext}" },
 }, {
   javascript = jest.queries.javascript,
   typescript = jest.queries.typescript,
 })
 
-function mocha:parse_name(name)
-  return jest:parse_name(name)
+function mocha:parse_testname(name)
+  return jest:parse_testname(name)
 end
 
 function mocha:build_test_args(args, tests)

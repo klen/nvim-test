@@ -1,10 +1,11 @@
 local Runner = require "nvim-test.runner"
-local localCmd = "./node_modules/.bin/cypress"
 local jest = require "nvim-test.runners.jest"
 
 local cypress = Runner:init({
-  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "cypress",
+  command = { "./node_modules/.bin/cypress", "cypress" },
   args = { "run" },
+  file_pattern = jest.config.file_pattern,
+  find_files = jest.config.find_files,
 }, {
   javascript = jest.queries.javascript,
 })

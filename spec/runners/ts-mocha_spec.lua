@@ -1,4 +1,4 @@
-local helpers = require "spec.lua.helpers"
+local helpers = require "spec.helpers"
 
 describe("tsmocha", function()
   before_each(function()
@@ -6,7 +6,7 @@ describe("tsmocha", function()
   end)
   after_each(helpers.after_each)
 
-  local filename = "spec/lua/test/fixtures/test.ts"
+  local filename = "spec/fixtures/test.ts"
 
   it("run suite", function()
     helpers.view(filename)

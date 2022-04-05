@@ -39,4 +39,47 @@ function M.concat(r, t)
   return r
 end
 
+function M.check_executable(cmds)
+  for _, cmd in ipairs(cmds) do
+    if vim.fn.executable(cmd) == 1 then
+      return cmd
+    end
+  end
+  return cmds[#cmds]
+end
+
+---Find file by patterns
+--
+---@param source string
+---@param patterns table
+---@return string
+function M.find_file_by_patterns(source, patterns, force)
+  local ctx = {
+    name = vim.fn.fnamemodify(source, ":t:r"),
+    ext = vim.fn.fnamemodify(source, ":e"),
+  }
+  for _, pat in ipairs(patterns) do
+    local filename = M.format_pattern(pat, ctx)
+    local testfile = vim.fn.findfile(filename, source .. ";")
+    if #testfile > 0 then
+      return testfile
+    end
+  end
+  if force then
+    return vim.fn.fnamemodify(source, ":h") .. "/" .. M.format_pattern(patterns[1], ctx)
+  end
+  return source
+end
+
+---@param pattern string
+---@return string
+function M.format_pattern(pattern, ctx)
+  local res = pattern
+  for var in pattern:gmatch "{[^}]+}" do
+    var = var:gsub("{", ""):gsub("}", "")
+    res = res:gsub("{" .. var .. "}", ctx[var] or "")
+  end
+  return res
+end
+
 return M

@@ -1,4 +1,4 @@
-local helpers = require "spec.lua.helpers"
+local helpers = require "spec.helpers"
 
 describe("gotest", function()
   local pwd
@@ -6,7 +6,7 @@ describe("gotest", function()
   before_each(function()
     helpers.before_each()
     pwd = vim.fn.getcwd()
-    vim.api.nvim_command "cd spec/lua/test/fixtures/go"
+    vim.api.nvim_command "cd spec/fixtures/go"
   end)
   after_each(function()
     helpers.after_each()

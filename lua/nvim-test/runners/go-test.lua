@@ -2,7 +2,10 @@
 --
 local Runner = require "nvim-test.runner"
 
-local gotest = Runner:init({ command = "go", args = { "test", "-v" } }, {
+local gotest = Runner:init({
+  command = "go",
+  args = { "test", "-v" },
+}, {
   go = [[
       ((function_declaration
         name: (identifier) @function-name) @scope-root)

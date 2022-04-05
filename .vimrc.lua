@@ -5,18 +5,14 @@ require("nvim-test").setup {
 }
 
 require("nvim-test.runners.vusted"):setup {
-  args = { "--helper=spec/lua/conftest.lua" },
+  args = { "--helper=spec/conftest.lua" },
   env = {
     VIRTUAL_ENV = "",
     VUSTED_ARGS = "--headless --clean",
   },
 
-  find_spec = function(filename)
-    local test_pattern = "_spec.lua"
-    if filename:sub(-#test_pattern) == test_pattern then
-      return filename
-    end
-
-    return string.format("spec/lua/test/%s_spec.lua", vim.fn.fnamemodify(filename, ":t:r"))
+  find_files = function(filename)
+    local path, _ = vim.fn.fnamemodify(filename, ":p:h"):gsub("lua/nvim%-test", "spec")
+    return string.format("%s/%s_spec.lua", path, vim.fn.fnamemodify(filename, ":t:r"))
   end,
 }

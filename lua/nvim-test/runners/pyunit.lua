@@ -2,8 +2,10 @@ local Runner = require "nvim-test.runner"
 local pytest = require "nvim-test.runners.pytest"
 
 local pyunit = Runner:init({
-  command = vim.env.VIRTUAL_ENV and vim.env.VIRTUAL_ENV .. "/bin/python" or "python",
+  command = { (vim.env.VIRTUAL_ENV or "venv") .. "/bin/python", "python" },
   args = { "-m", "unittest" },
+  file_pattern = "\\v^test.*\\.py$",
+  find_files = { "test_{name}.py" },
 }, {
   python = pytest.queries.python,
 })

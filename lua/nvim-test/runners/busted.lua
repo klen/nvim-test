@@ -1,10 +1,14 @@
 local Runner = require "nvim-test.runner"
 
-local busted = Runner:init({ command = "busted" }, {
+local busted = Runner:init({
+  command = "busted",
+  file_pattern = "\\v_spec\\.(lua|moon)$",
+  find_files = "{name}_spec.{ext}",
+}, {
   lua = [[ ((function_call (identifier) (arguments (string) @method-name (function_definition))) @scope-root) ]],
 })
 
-function busted:parse_name(name)
+function busted:parse_testname(name)
   return name:gsub("^[\"']", ""):gsub("[\"']$", "")
 end
 

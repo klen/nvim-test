@@ -1,15 +1,16 @@
 local Runner = require "nvim-test.runner"
 local mocha = require "nvim-test.runners.mocha"
-local localCmd = "./node_modules/.bin/ts-mocha"
 
 local tsmocha = Runner:init({
-  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "ts-mocha",
+  command = { "./node_modules/.bin/ts-mocha", "ts-mocha" },
+  file_pattern = "\\v(tests?/.*|test)\\.(ts|tsx)$",
+  find_files = { "{name}.test.{ext}" },
 }, {
   typescript = mocha.queries.typescript,
 })
 
-function tsmocha:parse_name(name)
-  return mocha:parse_name(name)
+function tsmocha:parse_testname(name)
+  return mocha:parse_testname(name)
 end
 
 function tsmocha:build_test_args(args, tests)

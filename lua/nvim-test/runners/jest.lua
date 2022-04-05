@@ -1,5 +1,4 @@
 local Runner = require "nvim-test.runner"
-local localCmd = "./node_modules/.bin/jest"
 
 local query = [[
   ((expression_statement
@@ -14,13 +13,15 @@ local query = [[
 ]]
 
 local jest = Runner:init({
-  command = vim.fn.filereadable(localCmd) ~= 0 and localCmd or "jest",
+  command = { "./node_modules/.bin/jest", "jest" },
+  file_pattern = "\\v(__tests__/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$",
+  find_files = { "{name}.test.{ext}", "{name}.spec.{ext}" },
 }, {
   javascript = query,
   typescript = query,
 })
 
-function jest:parse_name(name)
+function jest:parse_testname(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
 end
 

@@ -12,12 +12,12 @@ Test Runner for neovim
 
 | Language       | Test Runners                     |
 | -------------: | :------------------------------- |
-| **Go**         | Go `go-test`                     |
-| **Javascript** | Mocha `mocha`, Jest `jest`       |
-| **Lua**        | Busted `busted`                  |
-| **Python**     | PyTest `pytest`, PyUnit `pyunit` |
-| **Rust**       | Cargo `cargo-test`               |
-| **Typescript** | TS-Mocha `ts-mocha`              |
+| **Go**         | `go-test`                        |
+| **Javascript** | `jest`, `mocha`                  |
+| **Lua**        | `busted`, `vusted`               |
+| **Python**     | `pytest`, `pyunit`               |
+| **Rust**       | `cargo-test`                     |
+| **Typescript** | `jest`, `mocha`, `ts-mocha`      |
 
 ## Install
 
@@ -37,10 +37,11 @@ use {
 
 The plugin defines the commands:
 
-- `TestNearest` - run the test nearest to the cursor
-- `TestFile` - run all tests in the current file
 - `TestSuite` - run the whole test suite
-- `TestLast` - run the last test
+- `TestFile` - run all tests for the current file
+- `TestEdit` - edit tests for the current file
+- `TestNearest` - run the test nearest to the cursor
+- `TestLast` - rerun the latest test
 - `TestVisit` - open the last run test in the current buffer
 - `TestInfo` - show an information about the plugin
 
@@ -79,11 +80,14 @@ require('nvim-test').setup {
 Setup a runner:
 ```lua
   require('nvim-test.runners.jest'):setup {
-    command = "~/node_modules/.bin/jest", -- a command to run the test runner
-    args = { "--collectCoverage=false" }, -- default arguments
-    env = { CUSTOM_VAR = 'value' },       -- custom environment variables
+    command = "~/node_modules/.bin/jest",                                       -- a command to run the test runner
+    args = { "--collectCoverage=false" },                                       -- default arguments
+    env = { CUSTOM_VAR = 'value' },                                             -- custom environment variables
 
-    filename_modifier = nil,              -- modify filename before tests run (:h filename-modifiers)
-    working_directory = nil,              -- set working directory (cwd by default)
+    file_pattern = "\\v(__tests__/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$",   -- determine whether a file is a testfile
+    find_files = { "{name}.test.{ext}", "{name}.spec.{ext}" },                  -- find testfile for a file
+
+    filename_modifier = nil,                                                    -- modify filename before tests run (:h filename-modifiers)
+    working_directory = nil,                                                    -- set working directory (cwd by default)
   }
 ```

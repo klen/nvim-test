@@ -1,10 +1,21 @@
-local helpers = require "spec.lua.helpers"
+local helpers = require "spec.helpers"
 
 describe("pytest", function()
   before_each(helpers.before_each)
   after_each(helpers.after_each)
 
-  local filename = "spec/lua/test/fixtures/test.py"
+  local filename = "spec/fixtures/test.py"
+
+  it("runner", function()
+    local runner = require "nvim-test.runners.pytest"
+    assert.is.truthy(runner)
+    assert.is.equal("pytest", runner.config.command)
+
+    assert.is_false(runner:is_testfile "somefile.py")
+    assert.is_true(runner:is_testfile "somefile_test.py")
+    assert.is_true(runner:is_testfile "test_somefile.py")
+    assert.is_true(runner:is_testfile "tests.py")
+  end)
 
   it("run suite", function()
     helpers.view(filename)

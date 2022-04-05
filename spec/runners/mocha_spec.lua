@@ -1,4 +1,4 @@
-local helpers = require "spec.lua.helpers"
+local helpers = require "spec.helpers"
 
 describe("mocha", function()
   before_each(function()
@@ -6,7 +6,16 @@ describe("mocha", function()
   end)
   after_each(helpers.after_each)
 
-  local filename = "spec/lua/test/fixtures/test.js"
+  local filename = "spec/fixtures/js/name.test.js"
+
+  it("runner", function()
+    local runner = require "nvim-test.runners.mocha"
+    assert.is.truthy(runner)
+
+    assert.is_false(runner:is_testfile "somefile.js")
+    assert.is_true(runner:is_testfile "somefile.test.js")
+    assert.is_true(runner:is_testfile "test/somefile.js")
+  end)
 
   it("run suite", function()
     helpers.view(filename)

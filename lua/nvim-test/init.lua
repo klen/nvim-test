@@ -24,23 +24,34 @@ function M.run(scope)
     local opts = {}
     local filename = nil
 
-    if scope ~= "suite" then
-      filename = runner.config.find_spec(
-        vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
-      )
-    end
+    -- Find tests
     if scope == "nearest" then
-      opts.tests = runner:find_tests(filetype)
+      opts.tests = runner:find_test(filetype)
     end
 
+    -- Find file
+    if scope ~= "suite" then
+      filename = vim.fn.expand(
+        "%" .. (runner.config.filename_modifier or M.config.filename_modifier)
+      )
+      if not runner:is_testfile(filename) then
+        filename = runner:find_file(filename)
+      end
+    end
+
+    -- Prepare run context
     local cmd = runner:build_cmd(filename, opts)
+    local cfg = { env = runner.config.env, working_directory = runner.config.working_directory }
+
+    -- Save last run
     vim.g.test_latest = {
       cmd = cmd,
-      cfg = runner.config,
+      cfg = cfg,
       filename = filename,
       line = api.nvim_win_get_cursor(0)[0],
     }
-    return M.run_cmd(cmd, runner.config)
+
+    return M.run_cmd(cmd, cfg)
   end
 end
 
@@ -78,6 +89,16 @@ function M.visit()
     return api.nvim_command(string.format("edit %s%s", opts.filename, args))
   end
   return notifier:notify("No tests were run so far", 3)
+end
+
+function M.edit()
+  local runner = M.get_runner(vim.bo.filetype)
+  local filename = vim.fn.expand(
+    "%" .. (runner.config.filename_modifier or M.config.filename_modifier)
+  )
+  if not runner:is_testfile(filename) then
+    vim.api.nvim_command("edit " .. runner:find_file(filename, true))
+  end
 end
 
 --- Run the given command
@@ -131,6 +152,7 @@ function M.setup(cfg)
     api.nvim_command "command! TestSuite lua require'nvim-test'.run('suite')<CR>"
     api.nvim_command "command! TestVisit lua require'nvim-test'.visit()<CR>"
     api.nvim_command "command! TestInfo lua require'nvim-test.info'()<CR>"
+    api.nvim_command "command! TestEdit lua require'nvim-test'.edit()<CR>"
   end
 end
 

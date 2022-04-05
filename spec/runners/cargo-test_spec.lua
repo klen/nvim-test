@@ -1,9 +1,9 @@
-local helpers = require "spec.lua.helpers"
+local helpers = require "spec.helpers"
 
 describe("cargotest", function()
   before_each(function()
     helpers.before_each()
-    vim.api.nvim_command "cd spec/lua/test/fixtures/rust/crate"
+    vim.api.nvim_command "cd spec/fixtures/rust/crate"
   end)
   after_each(function()
     helpers.after_each()

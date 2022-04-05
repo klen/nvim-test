@@ -2,15 +2,10 @@
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
 
-local find_spec = function(filename)
-  return filename
-end
-
 ---@class Runner
 local Runner = {
   config = {
     args = {},
-    find_spec = find_spec,
 
     filename_modifier = nil,
     working_directory = nil,
@@ -21,10 +16,10 @@ Runner.__index = Runner
 function Runner:init(config, queries)
   self = setmetatable({}, Runner)
   self.queries = queries or {}
-  self.config = vim.tbl_extend("force", self.config, config)
   for ft, query in pairs(self.queries) do
     vim.treesitter.set_query(ft, "nvim-test", query)
   end
+  self:setup(config)
   return self
 end
 
@@ -32,10 +27,13 @@ function Runner:setup(config)
   if config then
     self.config = vim.tbl_deep_extend("force", self.config, config)
   end
+  if type(self.config.command) == "table" then
+    self.config.command = utils.check_executable(self.config.command)
+  end
   return self
 end
 
-function Runner:find_tests(filetype)
+function Runner:find_test(filetype)
   local query = vim.treesitter.get_query(filetype, "nvim-test")
   local result = {}
   if query then
@@ -45,7 +43,7 @@ function Runner:find_tests(filetype)
       local capture_ID, capture_node = iter()
       if capture_node == curnode and query.captures[capture_ID] == "scope-root" then
         capture_ID, capture_node = iter()
-        local name = self:parse_name(ts_utils.get_node_text(capture_node)[1])
+        local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
         if self:is_test(name) then
           table.insert(result, 1, name)
         end
@@ -56,12 +54,48 @@ function Runner:find_tests(filetype)
   return result
 end
 
-function Runner:parse_name(name)
-  return name
+---Check is the given filename is a test file
+--
+---@param filename string
+---@return boolean
+function Runner:is_testfile(filename)
+  local file_pattern = self.config.file_pattern
+  if file_pattern and #file_pattern > 0 then
+    return vim.fn.match(filename, self.config.file_pattern) >= 0
+  end
+  return true
 end
 
-function Runner:is_test(name)
+---Find a test file for the given filename
+--
+---@param filename string
+---@return string
+function Runner:find_file(filename, force)
+  local finder = self.config.find_files
+  if not finder then
+    return filename
+  end
+  if type(finder) == "function" then
+    return finder(filename)
+  end
+  if type(finder) == "string" then
+    finder = { finder }
+  end
+  return utils.find_file_by_patterns(filename, finder, force)
+end
+
+---Check the given name is a test name
+--
+---@param testname string
+---@return boolean
+function Runner:is_test(testname)
   return true
+end
+
+---@param name string
+---@return string
+function Runner:parse_testname(name)
+  return name
 end
 
 -- Build command list

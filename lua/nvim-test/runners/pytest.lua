@@ -1,12 +1,9 @@
 local Runner = require "nvim-test.runner"
 
-local cmd = "pytest"
-if vim.env.VIRTUAL_ENV and vim.fn.filereadable(vim.env.VIRTUAL_ENV .. "/bin/pytest") then
-  cmd = vim.env.VIRTUAL_ENV .. "/bin/pytest"
-end
-
 local pytest = Runner:init({
-  command = cmd,
+  command = { (vim.env.VIRTUAL_ENV or "venv") .. "/bin/pytest", "pytest" },
+  file_pattern = "\\v(test_[^.]+|[^.]+_test|tests)\\.py$",
+  find_files = { "test_{name}.py", "{name}_test.py", "tests.py" },
 }, {
   python = [[
       ; Class
