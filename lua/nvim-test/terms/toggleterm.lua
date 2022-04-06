@@ -1,12 +1,12 @@
 local callbacks = require "nvim-test.terms.callbacks"
 
--- local terminal = require "toggleterm.terminal"
-local ok, terminal = pcall(require, "toggleterm.terminal")
-if not ok then
-  error "Install toggleterm.nvim to use toggleterm"
-end
+local terminal = require "toggleterm.terminal"
+-- local ok, terminal = pcall(require, "toggleterm.terminal")
+-- if not ok then
+--   error "Install toggleterm.nvim to use toggleterm"
+-- end
 
-local terms = {}
+local term = nil
 
 ---Run terminal
 ---@param cmd table
@@ -20,14 +20,11 @@ return function(cmd, cfg, termCfg)
   local on_exit = callbacks.bind_on_exit(termCfg)
 
   -- Clean terminals
-  if termCfg.keep_one then
-    for pos, term in ipairs(terms) do
-      term:close()
-      table.remove(terms, pos)
-    end
+  if termCfg.keep_one and term then
+    term:close()
   end
 
-  local term = terminal.Terminal:new {
+  term = terminal.Terminal:new {
     id = terminal.get_toggled_id(),
     cmd = command,
     dir = cfg.working_directory,
@@ -37,7 +34,6 @@ return function(cmd, cfg, termCfg)
       on_exit(_, status)
     end,
   }
-  table.insert(terms, term)
   term:open(
     termCfg.direction == "vertical" and termCfg.width or termCfg.height,
     termCfg.direction,

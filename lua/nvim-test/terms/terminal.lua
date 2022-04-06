@@ -4,7 +4,7 @@ local directionsMap = {
   vertical = "vsplit",
   horizontal = "split",
 }
-local buffers = {}
+local term = nil
 local next = next
 
 local exec = function(cmd, cfg, termCfg)
@@ -44,17 +44,13 @@ return function(cmd, cfg, termCfg)
   end
 
   -- Clean buffers
-  if termCfg.keep_one then
-    for pos, bufnr in ipairs(buffers) do
-      if vim.fn.bufexists(bufnr) > 0 then
-        vim.api.nvim_buf_delete(bufnr, { force = true })
-        table.remove(buffers, pos)
-      end
+  if termCfg.keep_one and term then
+    if vim.fn.bufexists(term) > 0 then
+      vim.api.nvim_buf_delete(term, { force = true })
     end
   end
 
   vim.cmd(string.format("botright %s new", split))
   exec(cmd, cfg, termCfg)
-
-  table.insert(buffers, vim.api.nvim_get_current_buf())
+  term = vim.api.nvim_get_current_buf()
 end
