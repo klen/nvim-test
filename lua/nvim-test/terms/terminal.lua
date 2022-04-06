@@ -1,4 +1,4 @@
-local notifier = require "nvim-test.notify"
+local callbacks = require "nvim-test.terms.callbacks"
 
 local directionsMap = {
   vertical = "vsplit",
@@ -9,12 +9,7 @@ local next = next
 
 local exec = function(cmd, cfg, termCfg)
   local opts = {
-    on_exit = function(_, status)
-      if termCfg.stopinsert == "auto" and status ~= 0 then
-        vim.cmd "stopinsert!"
-        notifier:onotify("Tests are failed", 3)
-      end
-    end,
+    on_exit = callbacks.bind_on_exit(termCfg),
   }
   if cfg.env and next(cfg.env) then
     opts.env = cfg.env
@@ -62,10 +57,4 @@ return function(cmd, cfg, termCfg)
   exec(cmd, cfg, termCfg)
 
   table.insert(buffers, vim.api.nvim_get_current_buf())
-  if termCfg.stopinsert == true or termCfg.go_back then
-    vim.cmd "stopinsert!"
-  end
-  if termCfg.go_back then
-    vim.cmd "wincmd p"
-  end
 end

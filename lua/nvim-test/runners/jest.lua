@@ -27,7 +27,7 @@ end
 
 function jest:build_test_args(args, tests)
   table.insert(args, "-t")
-  table.insert(args, table.concat(tests, " "))
+  table.insert(args, "^" .. table.concat(tests, " ") .. "$")
 end
 
 return jest
