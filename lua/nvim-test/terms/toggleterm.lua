@@ -13,8 +13,14 @@ local defaults = {
 return function(cmd, _, termCfg)
   termCfg = vim.tbl_deep_extend("force", defaults, termCfg)
   local size = termCfg.direction == "vertical" and termCfg.width or termCfg.height
+  
+  local command = cmd[1]
+  for i = 2, #cmd do
+    command = command .. ' ' .. cmd[i]
+  end
+
   toggleterm.exec(
-    cmd,
+    command,
     termCfg.num,
     termCfg.size or size,
     termCfg.dir,
