@@ -25,7 +25,6 @@ return function(cmd, cfg, termCfg)
   end
 
   term = terminal.Terminal:new {
-    id = terminal.get_toggled_id(),
     cmd = command,
     dir = cfg.working_directory,
     direction = termCfg.direction,
