@@ -49,4 +49,11 @@ describe("pytest", function()
     vim.api.nvim_command "TestLast"
     assert.are.same(vim.g.test_latest.cmd, { "pytest", filename })
   end)
+
+  it("setup args", function()
+    require("nvim-test.runners.pytest"):setup { args = { "-v" } }
+    helpers.view(filename)
+    vim.api.nvim_command "TestFile"
+    assert.are.same(vim.g.test_latest.cmd, { "pytest", "-v", filename })
+  end)
 end)

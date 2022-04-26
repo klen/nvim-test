@@ -1,6 +1,7 @@
 ---@diagnostic disable: unused-local
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
+local ts = vim.treesitter
 
 ---@class Runner
 local Runner = {
@@ -17,7 +18,7 @@ function Runner:init(config, queries)
   self = setmetatable({}, Runner)
   self.queries = queries or {}
   for ft, query in pairs(self.queries) do
-    vim.treesitter.set_query(ft, "nvim-test", query)
+    ts.set_query(ft, "nvim-test", query)
   end
   self:setup(config)
   return self
@@ -34,7 +35,7 @@ function Runner:setup(config)
 end
 
 function Runner:find_test(filetype)
-  local query = vim.treesitter.get_query(filetype, "nvim-test")
+  local query = ts.get_query(filetype, "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
@@ -43,7 +44,7 @@ function Runner:find_test(filetype)
       local capture_ID, capture_node = iter()
       if capture_node == curnode and query.captures[capture_ID] == "scope-root" then
         capture_ID, capture_node = iter()
-        local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
+        local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
         if self:is_test(name) then
           table.insert(result, 1, name)
         end
