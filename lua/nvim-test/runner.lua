@@ -1,6 +1,7 @@
 ---@diagnostic disable: unused-local
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
+local ts = vim.treesitter
 
 ---@class Runner
 local Runner = {
@@ -17,7 +18,7 @@ function Runner:init(config, queries)
   self = setmetatable({}, Runner)
   self.queries = queries or {}
   for ft, query in pairs(self.queries) do
-    vim.treesitter.set_query(ft, "nvim-test", query)
+    ts.set_query(ft, "nvim-test", query)
   end
   self:setup(config)
   return self
@@ -34,15 +35,15 @@ function Runner:setup(config)
 end
 
 function Runner:find_test_in_file(filetype, filename)
-  local query = vim.treesitter.get_query(self:get_tf_parser_name(filetype), "nvim-test")
+  local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
   local result = {}
   if query then
-    local parser = vim.treesitter.get_parser(0, self:get_tf_parser_name(filetype))
+    local parser = ts.get_parser(0, self:get_tf_parser_name(filetype))
     local curnode = unpack(parser:parse()):root()
     while curnode do
       for capture_ID, capture_node in query:iter_captures(curnode, 0) do
         if query.captures[capture_ID] == "scope-root" then
-          local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
+          local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
           if self:is_test(name) then
             result[name] = true
           end
@@ -55,14 +56,14 @@ function Runner:find_test_in_file(filetype, filename)
 end
 
 function Runner:find_nearest_test(filetype)
-  local query = vim.treesitter.get_query(self:get_tf_parser_name(filetype), "nvim-test")
+  local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
       for capture_ID, capture_node in query:iter_captures(curnode, 0) do
         if query.captures[capture_ID] == "scope-root" then
-          local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
+          local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
           if self:is_test(name) then
             result[name] = true
             break
