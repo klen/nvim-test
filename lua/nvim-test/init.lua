@@ -26,17 +26,19 @@ function M.run(scope)
 
     -- Find tests
     if scope == "nearest" then
-      opts.tests = runner:find_test(filetype)
+      opts.tests = runner:find_nearest_test(filetype)
     end
 
     -- Find file
-    if scope ~= "suite" then
+    if scope == "file" then
       filename = vim.fn.expand(
         "%" .. (runner.config.filename_modifier or M.config.filename_modifier)
       )
       if not runner:is_testfile(filename) then
         filename = runner:find_file(filename)
       end
+
+      opts.tests = runner:find_test_in_file(filetype, filename)
     end
 
     -- Prepare run context

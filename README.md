@@ -18,6 +18,7 @@ Test Runner for neovim
 | **Python**     | `pytest`, `pyunit`               |
 | **Rust**       | `cargo-test`                     |
 | **Typescript** | `jest`, `mocha`, `ts-mocha`      |
+| **C Sharp**    | `csharp-test`                    |
 
 ## Install
 

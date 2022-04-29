@@ -33,20 +33,45 @@ function Runner:setup(config)
   return self
 end
 
-function Runner:find_test(filetype)
-  local query = vim.treesitter.get_query(filetype, "nvim-test")
+function Runner:find_test_in_file(filetype, filename)
+  local query = vim.treesitter.get_query(self:get_tf_parser_name(filetype), "nvim-test")
+  local result = {}
+  if query then
+    local parser = vim.treesitter.get_parser(0, self:get_tf_parser_name(filetype))
+    local curnode = unpack(parser:parse()):root()
+    while curnode do
+      for capture_ID, capture_node in query:iter_captures(curnode, 0) do
+        if query.captures[capture_ID] == "scope-root" then
+          local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
+          if self:is_test(name) then
+            result[name] = true
+          end
+        end
+      end
+      curnode = curnode:parent()
+    end
+  end
+  return result
+end
+
+function Runner:find_nearest_test(filetype)
+  local query = vim.treesitter.get_query(self:get_tf_parser_name(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
-      local iter = query:iter_captures(curnode, 0)
-      local capture_ID, capture_node = iter()
-      if capture_node == curnode and query.captures[capture_ID] == "scope-root" then
-        capture_ID, capture_node = iter()
-        local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
-        if self:is_test(name) then
-          table.insert(result, 1, name)
+      for capture_ID, capture_node in query:iter_captures(curnode, 0) do
+        if query.captures[capture_ID] == "scope-root" then
+          local name = self:parse_testname(ts_utils.get_node_text(capture_node)[1])
+          if self:is_test(name) then
+            result[name] = true
+            break
+          end
         end
+      end
+      -- exit the loop if we found the test
+      if next(result) ~= nil then
+        break
       end
       curnode = curnode:parent()
     end
@@ -96,6 +121,12 @@ end
 ---@return string
 function Runner:parse_testname(name)
   return name
+end
+
+---@param filetype string
+---@return string
+function Runner:get_tf_parser_name(filetype)
+  return filetype
 end
 
 -- Build command list
