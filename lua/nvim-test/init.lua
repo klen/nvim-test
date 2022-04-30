@@ -30,7 +30,7 @@ function M.run(scope)
     end
 
     -- Find file
-    if scope == "nearest" then
+    if scope == "file" then
       opts.tests = runner:find_test_in_file(filetype)
     end
 
