@@ -34,7 +34,7 @@ function Runner:setup(config)
   return self
 end
 
-function Runner:find_test_in_file(filetype, filename)
+function Runner:find_test_in_file(filetype)
   local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
   local result = {}
   if query then
