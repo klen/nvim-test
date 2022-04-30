@@ -66,13 +66,10 @@ function Runner:find_nearest_test(filetype)
           local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
           if self:is_test(name) then
             result[name] = true
-            break
+            -- exit the loop if we found the test
+            return result
           end
         end
-      end
-      -- exit the loop if we found the test
-      if next(result) ~= nil then
-        break
       end
       curnode = curnode:parent()
     end
