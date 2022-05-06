@@ -3,10 +3,11 @@ local Runner = require "nvim-test.runner"
 local query = [[
   ((expression_statement
     (call_expression
-      function: (identifier)
+      function: (identifier) @method-name
+      (#match? @method-name "^(describe|test|it)")
       arguments: (arguments [
-        ((string) @method-name)
-        ((template_string) @method-name)
+        ((string) @test-name)
+        ((template_string) @test-name)
       ]
     )))
   @scope-root)

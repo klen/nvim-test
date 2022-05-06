@@ -34,42 +34,20 @@ function Runner:setup(config)
   return self
 end
 
-function Runner:find_test_in_file(filetype)
-  local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
-  local result = {}
-  if query then
-    local parser = ts.get_parser(0, self:get_tf_parser_name(filetype))
-    local curnode = unpack(parser:parse()):root()
-    while curnode do
-      for capture_ID, capture_node in query:iter_captures(curnode, 0) do
-        if query.captures[capture_ID] == "scope-root" then
-          local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
-          if self:is_test(name) then
-            result[name] = true
-          end
-        end
-      end
-      curnode = curnode:parent()
-    end
-  end
-  return result
-end
-
 function Runner:find_nearest_test(filetype)
   local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
-      for capture_ID, capture_node in query:iter_captures(curnode, 0) do
-        if query.captures[capture_ID] == "scope-root" then
-          local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
-          if self:is_test(name) then
-            result[name] = true
-            -- exit the loop if we found the test
-            return result
-          end
+      local iter = query:iter_captures(curnode, 0)
+      local capture_id, capture_node = iter()
+      if capture_node == curnode and query.captures[capture_id] == "scope-root" then
+        while capture_id and query.captures[capture_id] ~= "test-name" do
+          capture_id, capture_node = iter()
         end
+        local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
+        table.insert(result, 1, name)
       end
       curnode = curnode:parent()
     end
@@ -105,14 +83,6 @@ function Runner:find_file(filename, force)
     finder = { finder }
   end
   return utils.find_file_by_patterns(filename, finder, force)
-end
-
----Check the given name is a test name
---
----@param testname string
----@return boolean
-function Runner:is_test(testname)
-  return true
 end
 
 ---@param name string

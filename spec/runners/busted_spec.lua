@@ -18,19 +18,19 @@ describe("busted", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.same(vim.g.test_latest.cmd, { "busted" })
+    assert.are.same({ "busted" }, vim.g.test_latest.cmd)
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "busted", filename })
+    assert.are.same({ "busted", filename }, vim.g.test_latest.cmd)
   end)
 
   it("run nearest function", function()
     helpers.view(filename, 4)
     vim.api.nvim_command "TestNearest"
-    assert.are.same(vim.g.test_latest.cmd, { "busted", filename, "--filter", "luatest test1" })
+    assert.are.same({ "busted", filename, "--filter", "luatest test1" }, vim.g.test_latest.cmd)
   end)
 
   it("run latest", function()

@@ -7,5 +7,5 @@ return {
   rust = "nvim-test.runners.cargo-test",
   typescript = "nvim-test.runners.jest",
   typescriptreact = "nvim-test.runners.jest",
-  cs = "nvim-test.runners.csharp-test",
+  cs = "nvim-test.runners.dotnet",
 }

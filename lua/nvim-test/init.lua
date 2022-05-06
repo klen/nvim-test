@@ -30,11 +30,6 @@ function M.run(scope)
     end
 
     -- Find file
-    if scope == "file" then
-      opts.tests = runner:find_test_in_file(filetype)
-    end
-
-    -- Find file
     if scope ~= "suite" then
       filename = vim.fn.expand(
         "%" .. (runner.config.filename_modifier or M.config.filename_modifier)

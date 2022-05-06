@@ -7,18 +7,22 @@ local pytest = Runner:init({
 }, {
   python = [[
       ; Class
-      ((class_definition
-        name: (identifier) @class-name) @scope-root)
+      (
+        (
+          class_definition name: (identifier) @test-name
+          (#match? @test-name "[Tt]est")
+        )
+      @scope-root)
 
       ; Function
-      ((function_definition
-        name: (identifier) @function-name) @scope-root)
+      (
+        (
+          function_definition name: (identifier) @test-name
+          (#match? @test-name "^[Tt]est")
+        )
+      @scope-root)
     ]],
 })
-
-function pytest:is_test(name)
-  return string.match(name, "[Tt]est") and true
-end
 
 function pytest:build_test_args(args, tests)
   args[#args] = args[#args] .. "::" .. table.concat(tests, "::")
