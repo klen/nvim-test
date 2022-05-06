@@ -12,7 +12,7 @@ Test Runner for neovim
 
 | Language       | Test Runners                     |
 | -------------: | :------------------------------- |
-| **C Sharp**    | `csharp-test`                    |
+| **C Sharp**    | `dotnet test`                    |
 | **Go**         | `go-test`                        |
 | **Haskel**     | `stack`, `hspec`                 |
 | **Javascript** | `jest`, `mocha`                  |
