@@ -26,7 +26,7 @@ function M.run(scope)
 
     -- Find tests
     if scope == "nearest" then
-      opts.tests = runner:find_test(filetype)
+      opts.tests = runner:find_nearest_test(filetype)
     end
 
     -- Find file

@@ -5,16 +5,18 @@ local Runner = require "nvim-test.runner"
 local gotest = Runner:init({
   command = "go",
   args = { "test", "-v" },
+  file_pattern = "\\v([^.]+_test)\\.go$", -- determine whether a file is a testfile
+  find_files = { "{name}_test.go" }, -- find testfile for a file
 }, {
   go = [[
-      ((function_declaration
-        name: (identifier) @function-name) @scope-root)
+      (
+        (
+          function_declaration name: (identifier) @test-name
+          (#match? @test-name "^(Test|Example)")
+        )
+      @scope-root)
     ]],
 })
-
-function gotest:is_test(name)
-  return string.match(name, "^Test") or string.match(name, "^Example")
-end
 
 function gotest:build_args(args, filename, opts)
   if filename then
@@ -22,7 +24,7 @@ function gotest:build_args(args, filename, opts)
     if path ~= "." then
       table.insert(args, string.format("./%s/...", path))
     end
-    if opts.tests and #opts.tests > 0 then
+    if opts.tests and next(opts.tests) ~= nil then
       table.insert(args, "-run")
       table.insert(args, opts.tests[1] .. "$")
     end

@@ -5,19 +5,20 @@ local Runner = require "nvim-test.runner"
 local cargotest = Runner:init({ command = "cargo", args = { "test" }, package = false }, {
   rust = [[
       (
-        (mod_item
-          name: (identifier) @module-name)
+        (
+          mod_item name: (identifier) @test-name
+          (#match? @test-name "[Tt]est")
+        )
       @scope-root)
+
       (
-        (function_item
-          name: (identifier) @function-name)
+        (
+          function_item name: (identifier) @test-name
+          (#match? @test-name "[Tt]est")
+        )
       @scope-root)
     ]],
 })
-
-function cargotest:is_test(name)
-  return string.match(name, "[Tt]est") and true
-end
 
 function cargotest:build_args(args, filename, opts)
   -- for whole suite do nothing

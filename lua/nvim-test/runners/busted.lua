@@ -5,7 +5,9 @@ local busted = Runner:init({
   file_pattern = "\\v_spec\\.(lua|moon)$",
   find_files = "{name}_spec.{ext}",
 }, {
-  lua = [[ ((function_call (identifier) (arguments (string) @method-name (function_definition))) @scope-root) ]],
+  lua = [[
+    ((function_call (identifier) (arguments (string) @test-name (function_definition))) @scope-root)
+    ]],
 })
 
 function busted:parse_testname(name)
