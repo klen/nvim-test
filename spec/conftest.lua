@@ -13,9 +13,11 @@ nvim_treesitter.setup {
   ensure_installed = {
     "c_sharp",
     "go",
+    "haskell",
     "javascript",
     "lua",
     "python",
+    "ruby",
     "rust",
     "typescript",
   },

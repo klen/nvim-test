@@ -43,8 +43,11 @@ function Runner:find_nearest_test(filetype)
       local iter = query:iter_captures(curnode, 0)
       local capture_id, capture_node = iter()
       if capture_node == curnode and query.captures[capture_id] == "scope-root" then
-        while capture_id and query.captures[capture_id] ~= "test-name" do
+        while query.captures[capture_id] ~= "test-name" do
           capture_id, capture_node = iter()
+          if not capture_id then
+            return result
+          end
         end
         local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
         table.insert(result, 1, name)

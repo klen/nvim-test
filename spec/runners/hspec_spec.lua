@@ -1,0 +1,42 @@
+local helpers = require "spec.helpers"
+
+describe("hspec", function()
+  before_each(function()
+    helpers.before_each { run = false, runners = { haskell = "nvim-test.runners.hspec" } }
+  end)
+  after_each(helpers.after_each)
+
+  local filename = "spec/fixtures/Spec.hs"
+
+  it("run suite", function()
+    helpers.view(filename)
+    vim.api.nvim_command "TestSuite"
+    assert.are.same({ "runhaskell" }, vim.g.test_latest.cmd)
+  end)
+
+  it("run file", function()
+    helpers.view(filename)
+    vim.api.nvim_command "TestFile"
+    assert.are.same({ "runhaskell", filename }, vim.g.test_latest.cmd)
+  end)
+
+  it("run nearest function", function()
+    helpers.view(filename, 16)
+    vim.api.nvim_command "TestNearest"
+    assert.are.same({
+      "runhaskell",
+      filename,
+      "--match",
+      "Prelude.head/nested/throws an exception if used with an empty list",
+    }, vim.g.test_latest.cmd)
+  end)
+
+  it("run latest", function()
+    helpers.view(filename)
+    vim.api.nvim_command "TestFile"
+    assert.are.same({ "runhaskell", filename }, vim.g.test_latest.cmd)
+
+    vim.api.nvim_command "TestLast"
+    assert.are.same({ "runhaskell", filename }, vim.g.test_latest.cmd)
+  end)
+end)
