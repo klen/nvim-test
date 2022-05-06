@@ -14,7 +14,7 @@ Test Runner for neovim
 | -------------: | :------------------------------- |
 | **C Sharp**    | `dotnet test`                    |
 | **Go**         | `go-test`                        |
-| **Haskel**     | `stack`, `hspec`                 |
+| **Haskel**     | `hspec`, `stack`                 |
 | **Javascript** | `jest`, `mocha`                  |
 | **Lua**        | `busted`, `vusted`               |
 | **Python**     | `pytest`, `pyunit`               |
