@@ -12,7 +12,7 @@ local gotest = Runner:init({
       (
         (
           function_declaration name: (identifier) @test-name
-          (#match? @test-name "^(Test|Example)")
+          (#match? @test-name "^(Test|Benchmark|Fuzz)")
         )
       @scope-root)
     ]],
