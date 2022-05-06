@@ -1,9 +1,7 @@
 local helpers = require "spec.helpers"
 
 describe("hspec", function()
-  before_each(function()
-    helpers.before_each { run = false, runners = { haskell = "nvim-test.runners.hspec" } }
-  end)
+  before_each(helpers.before_each)
   after_each(helpers.after_each)
 
   local filename = "spec/fixtures/Spec.hs"
