@@ -26,10 +26,6 @@ local cstest = Runner:init({
     ]],
 })
 
-function cstest:get_tf_parser_name()
-  return "c_sharp"
-end
-
 function cstest:build_test_args(args, tests)
   table.insert(args, "--filter")
   table.insert(args, "FullyQualifiedName=" .. table.concat(tests, "."))
