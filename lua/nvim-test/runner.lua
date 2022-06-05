@@ -1,6 +1,7 @@
 ---@diagnostic disable: unused-local
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
+local ts_parsers = require("nvim-treesitter.parsers")
 local ts = vim.treesitter
 
 ---@class Runner
@@ -35,7 +36,7 @@ function Runner:setup(config)
 end
 
 function Runner:find_nearest_test(filetype)
-  local query = ts.get_query(self:get_tf_parser_name(filetype), "nvim-test")
+  local query = ts.get_query(ts_parsers.ft_to_lang(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
@@ -92,12 +93,6 @@ end
 ---@return string
 function Runner:parse_testname(name)
   return name
-end
-
----@param filetype string
----@return string
-function Runner:get_tf_parser_name(filetype)
-  return filetype
 end
 
 -- Build command list
