@@ -2,7 +2,7 @@ return {
   cs = "nvim-test.runners.dotnet",
   go = "nvim-test.runners.go-test",
   haskell = "nvim-test.runners.hspec",
-  javacriptreact = "nvim-test.runners.jest",
+  javascriptreact = "nvim-test.runners.jest",
   javascript = "nvim-test.runners.jest",
   lua = "nvim-test.runners.busted",
   python = "nvim-test.runners.pytest",
