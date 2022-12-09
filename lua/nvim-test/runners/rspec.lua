@@ -1,7 +1,7 @@
 local Runner = require "nvim-test.runner"
 
 local rspec = Runner:init({
-  command = { "rspec" },
+  command = { "bundle", "exec", "rspec" },
   file_pattern = "\\v(spec_[^.]+|[^.]+_spec)\\.rb$",
   find_files = { "{name}_spec.rb" },
 }, {
