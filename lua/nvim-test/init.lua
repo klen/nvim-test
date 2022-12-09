@@ -39,9 +39,15 @@ function M.run(scope)
       end
     end
 
+    -- Find the current working directory
+    local cwd = runner:find_working_directory(filename)
+    if cwd and #cwd > 0 then
+      filename = string.gsub(filename, "^" .. cwd .. "/", "", 1)
+    end
+
     -- Prepare run context
     local cmd = runner:build_cmd(filename, opts)
-    local cfg = { env = runner.config.env, working_directory = runner.config.working_directory }
+    local cfg = { env = runner.config.env, working_directory = cwd }
 
     -- Save last run
     vim.g.test_latest = {
