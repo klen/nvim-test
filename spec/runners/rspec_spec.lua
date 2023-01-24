@@ -1,10 +1,18 @@
 local helpers = require "spec.helpers"
+local pwd
 
 describe("rspec", function()
-  before_each(helpers.before_each)
-  after_each(helpers.after_each)
+  before_each(function()
+    helpers.before_each()
+    pwd = vim.fn.getcwd()
+    vim.api.nvim_command("cd spec/fixtures/ruby")
+  end)
+  after_each(function()
+    helpers.after_each()
+    vim.api.nvim_command("cd " .. pwd)
+  end)
 
-  local filename = "spec/fixtures/test_spec.rb"
+  local filename = "spec/test_spec.rb"
 
   it("run suite", function()
     helpers.view(filename)
@@ -19,10 +27,10 @@ describe("rspec", function()
   end)
 
   it("run nearest function", function()
-    helpers.view(filename, 4)
+    helpers.view(filename, 5)
     vim.api.nvim_command "TestNearest"
     assert.are.same(
-      { "rspec", filename, "--example", "#score returns 0 for an all gutter game" },
+      { "rspec", filename, "--example", "'#score returns 0 for an all gutter game'" },
       vim.g.test_latest.cmd
     )
   end)

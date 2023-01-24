@@ -1,23 +1,22 @@
 var assert = require('assert');
 
-describe('jstest', function () {
-  describe(`ns`, function () {
-    it('test1', function () {
+describe("tstest", (): void => {
+  describe(`ns`, (): void => {
+    it("test1", (): void => {
       // assertions
-      assert.ok(true);
-    })
-  })
-})
+    });
+  });
+});
 
 describe('mocha', function () {
   describe(`ns`, function () {
     it('test2', function () {
       // assertions
       assert.ok(true);
-    })
+    });
     it('test3', function () {
       // assertions
       assert.ok(true);
-    })
-  })
-})
+    });
+  });
+});

@@ -1,7 +1,7 @@
-#![warn(rust_2018_idioms)]
-#![cfg(feature = "full")]
-
+#[cfg(test)]
 mod tests {
+    use rstest::rstest;
+
     #[test]
     fn first_test () {
         // body
@@ -26,7 +26,7 @@ mod tests {
         case(1),
         case(2),
     )]
-    fn rstest_test(_: u8) {
+    fn rstest_test(input: u8) {
         // body
     }
 }

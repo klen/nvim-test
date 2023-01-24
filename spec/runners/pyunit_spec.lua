@@ -1,12 +1,20 @@
 local helpers = require "spec.helpers"
+local pwd
 
+-- to list all available tests run "python -m unittest discover -v"
 describe("pyunit", function()
   before_each(function()
     helpers.before_each { run = false, runners = { python = "nvim-test.runners.pyunit" } }
+    pwd = vim.fn.getcwd()
+    vim.api.nvim_command "cd spec/fixtures/python"
   end)
-  after_each(helpers.after_each)
 
-  local filename = "spec/fixtures/test.py"
+  after_each(function()
+    helpers.after_each()
+    vim.api.nvim_command("cd " .. pwd)
+  end)
+
+  local filename = "test.py"
 
   it("runner", function()
     local runner = require "nvim-test.runners.pyunit"
@@ -19,21 +27,27 @@ describe("pyunit", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.same(vim.g.test_latest.cmd, { "python", "-m", "unittest" })
+    assert.are.same(
+      { "python", "-m", "unittest" },
+      vim.g.test_latest.cmd
+    )
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "python", "-m", "unittest", "spec.fixtures.test" })
+    assert.are.same(
+      { "python", "-m", "unittest", "test" },
+      vim.g.test_latest.cmd
+    )
   end)
 
   it("run nearest function", function()
-    helpers.view(filename, 4)
+    helpers.view(filename, 10)
     vim.api.nvim_command "TestNearest"
     assert.are.same(
-      vim.g.test_latest.cmd,
-      { "python", "-m", "unittest", "spec.fixtures.test.test_base" }
+      { "python", "-m", "unittest", "test.MyTest.test_method1" },
+      vim.g.test_latest.cmd
     )
   end)
 
@@ -41,17 +55,23 @@ describe("pyunit", function()
     helpers.view(filename, 13)
     vim.api.nvim_command "TestNearest"
     assert.are.same(
-      vim.g.test_latest.cmd,
-      { "python", "-m", "unittest", "spec.fixtures.test.MyTest.test_method2" }
+      { "python", "-m", "unittest", "test.MyTest.test_method2" },
+      vim.g.test_latest.cmd
     )
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "python", "-m", "unittest", "spec.fixtures.test" })
+    assert.are.same(
+      { "python", "-m", "unittest", "test" },
+      vim.g.test_latest.cmd
+    )
 
     vim.api.nvim_command "TestLast"
-    assert.are.same(vim.g.test_latest.cmd, { "python", "-m", "unittest", "spec.fixtures.test" })
+    assert.are.same(
+      { "python", "-m", "unittest", "test" },
+      vim.g.test_latest.cmd
+    )
   end)
 end)

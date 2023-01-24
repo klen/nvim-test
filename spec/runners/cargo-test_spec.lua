@@ -13,21 +13,21 @@ describe("cargotest", function()
   it("run suite", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestSuite"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test" })
+    assert.are.same({ "cargo", "test" }, vim.g.test_latest.cmd)
   end)
 
   it("run file", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test" })
+    assert.are.same({ "cargo", "test" }, vim.g.test_latest.cmd)
 
     helpers.view "src/somemod.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test", "somemod::" })
+    assert.are.same({ "cargo", "test", "somemod::" }, vim.g.test_latest.cmd)
 
     helpers.view "src/nested/mod.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test", "nested::" })
+    assert.are.same({ "cargo", "test", "nested::" }, vim.g.test_latest.cmd)
   end)
 
   it("run nearest function", function()
@@ -43,9 +43,9 @@ describe("cargotest", function()
   it("run latest", function()
     helpers.view "src/main.rs"
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test" })
+    assert.are.same({ "cargo", "test" }, vim.g.test_latest.cmd)
 
     vim.api.nvim_command "TestLast"
-    assert.are.same(vim.g.test_latest.cmd, { "cargo", "test" })
+    assert.are.same({ "cargo", "test" }, vim.g.test_latest.cmd)
   end)
 end)

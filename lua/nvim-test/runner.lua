@@ -35,25 +35,32 @@ function Runner:setup(config)
   return self
 end
 
+function Runner:find_tests_in_file(filetype)
+  return nil
+end
+
 function Runner:find_nearest_test(filetype)
   local query = ts.get_query(ts_parsers.ft_to_lang(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
-      local iter = query:iter_captures(curnode, 0)
-      local capture_id, capture_node = iter()
-      if capture_node == curnode and query.captures[capture_id] == "scope-root" then
-        while query.captures[capture_id] ~= "test-name" do
-          capture_id, capture_node = iter()
-          if not capture_id then
-            return result
-          end
+        for pattern, match, metadata in query:iter_matches(curnode, 0) do
+            --print("pattern: " .. vim.inspect(pattern))
+            --print("match: " .. vim.inspect(match))
+            for id, node in pairs(match) do
+                local name = query.captures[id]
+                --print("capture: " .. name)
+                if name == "test-name" then
+                    local test_name = self:parse_testname(ts.query.get_node_text(node, 0))
+                    --print("test name: " .. test_name)
+                    local fqdn = self:get_fully_qualified_name(filetype, node, test_name)
+                    table.insert(result, fqdn)
+                    return result
+                end
+            end
         end
-        local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
-        table.insert(result, 1, name)
-      end
-      curnode = curnode:parent()
+        curnode = curnode:parent()
     end
   end
   return result
@@ -93,6 +100,13 @@ end
 ---@return string
 function Runner:parse_testname(name)
   return name
+end
+
+---@param curnode tstree
+---@param name string
+---@return string
+function Runner:get_fully_qualified_name(filetype, curnode, name)
+    return name
 end
 
 -- Build command list
