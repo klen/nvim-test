@@ -1,6 +1,6 @@
 local helpers = require "spec.helpers"
 
-describe("hspec", function()
+describe("stack", function()
   before_each(function()
     helpers.before_each { run = false, runners = { haskell = "nvim-test.runners.stack" } }
   end)

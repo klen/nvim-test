@@ -39,7 +39,7 @@ describe("jest", function()
   it("run nearest function", function()
     helpers.view(filename, 4)
     vim.api.nvim_command "TestNearest"
-    assert.are.same({ "jest", filename, "-t", "^jstest ns test1$" }, vim.g.test_latest.cmd)
+    assert.are.same({ "jest", filename, "-t", "^jstest ns$" }, vim.g.test_latest.cmd)
     helpers.view(filename, 6)
     vim.api.nvim_command "TestNearest"
     assert.are.same({ "jest", filename, "-t", "^jstest ns test1$" }, vim.g.test_latest.cmd)

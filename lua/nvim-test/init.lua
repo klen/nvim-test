@@ -1,7 +1,6 @@
 local notifier = require "nvim-test.notify"
 local api = vim.api
 local suite_runner
-local Runner = require "nvim-test.runner"
 local M = {
   config = vim.deepcopy(require "nvim-test.config"),
   runners = require "nvim-test.runners",
@@ -26,10 +25,13 @@ function M.run(scope)
 
     -- Find tests
     if scope == "nearest" then
+      print("runner: " .. vim.inspect(runner))
       opts.tests = runner:find_nearest_test(filetype)
+    elseif scope == "file" then
+      opts.tests = runner:find_tests_in_file(filetype)
     end
 
-    -- Find file
+    -- Find test file
     if scope ~= "suite" then
       filename =
         vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))

@@ -2,4 +2,5 @@
 /_
 /nvim-treesitter
 /todo.txt
+/spec/fixtures/**/obj/
 /spec/fixtures/**/target/

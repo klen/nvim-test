@@ -18,34 +18,34 @@ describe("gotest", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v", "./..." })
+    assert.are.same({ "go", "test", "-v", "./..." }, vim.g.test_latest.cmd)
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v" })
+    assert.are.same({ "go", "test", "-v" }, vim.g.test_latest.cmd)
   end)
 
   it("run nested file", function()
     helpers.view(filename)
     vim.api.nvim_command "cd ../"
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v", "./go/..." })
+    assert.are.same({ "go", "test", "-v", "./go/..." }, vim.g.test_latest.cmd)
   end)
 
   it("run nearest function", function()
     helpers.view(filename, 6)
     vim.api.nvim_command "TestNearest"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v", "-run", "TestNumbers$" })
+    assert.are.same({ "go", "test", "-v", "-run", "TestNumbers$" }, vim.g.test_latest.cmd)
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v" })
+    assert.are.same({ "go", "test", "-v" }, vim.g.test_latest.cmd)
 
     vim.api.nvim_command "TestLast"
-    assert.are.same(vim.g.test_latest.cmd, { "go", "test", "-v" })
+    assert.are.same({ "go", "test", "-v" }, vim.g.test_latest.cmd)
   end)
 end)

@@ -20,27 +20,27 @@ describe("mocha", function()
   it("run suite", function()
     helpers.view(filename)
     vim.api.nvim_command "TestSuite"
-    assert.are.same(vim.g.test_latest.cmd, { "mocha" })
+    assert.are.same({ "mocha" }, vim.g.test_latest.cmd)
   end)
 
   it("run file", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "mocha", filename })
+    assert.are.same({ "mocha", filename }, vim.g.test_latest.cmd)
   end)
 
-  it("run nearest function", function()
+  it("run nearest test", function()
     helpers.view(filename, 4)
     vim.api.nvim_command "TestNearest"
-    assert.are.same(vim.g.test_latest.cmd, { "mocha", filename, "-f", "jstest ns test1" })
+    assert.are.same({ "mocha", filename, "-f", "jstest ns" }, vim.g.test_latest.cmd)
   end)
 
   it("run latest", function()
     helpers.view(filename)
     vim.api.nvim_command "TestFile"
-    assert.are.same(vim.g.test_latest.cmd, { "mocha", filename })
+    assert.are.same({ "mocha", filename }, vim.g.test_latest.cmd)
 
     vim.api.nvim_command "TestLast"
-    assert.are.same(vim.g.test_latest.cmd, { "mocha", filename })
+    assert.are.same({ "mocha", filename }, vim.g.test_latest.cmd)
   end)
 end)
