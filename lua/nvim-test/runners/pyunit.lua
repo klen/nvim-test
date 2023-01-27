@@ -4,7 +4,7 @@ local ts_parsers = require("nvim-treesitter.parsers")
 local ts_utils = require("nvim-treesitter.ts_utils")
 local ts = vim.treesitter
 
-local fqdn_query = [[
+local fqn_query = [[
     (
         (
             class_definition name: (identifier) @test-name
@@ -55,8 +55,8 @@ function pyunit:find_nearest_test(filetype)
                     local parse_testname_func = function (t_name)
                         return pyunit:parse_testname(t_name)
                     end
-                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, ".", fqdn_query)
-                    table.insert(result, fqdn)
+                    local fqn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, ".", fqn_query)
+                    table.insert(result, fqn)
                     return result
                 end
             end

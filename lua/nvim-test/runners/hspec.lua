@@ -4,7 +4,7 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 local utils = require "nvim-test.utils"
 local ts = vim.treesitter
 
-local fqdn_query = [[
+local fqn_query = [[
     ((stmt (exp_infix (exp_apply 
         (exp_name) @exp-name
         (#match? @exp-name "^(describe)")
@@ -44,8 +44,8 @@ function hspec:find_nearest_test(filetype)
                     local parse_testname_func = function (t_name)
                         return self:parse_testname(t_name)
                     end
-                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, "/", fqdn_query)
-                    table.insert(result, fqdn)
+                    local fqn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, "/", fqn_query)
+                    table.insert(result, fqn)
                     return result
                 end
             end

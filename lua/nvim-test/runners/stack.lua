@@ -30,8 +30,8 @@ function stack:find_nearest_test(filetype)
                 local name = ts_query.captures[id]
                 if name == "test-name" then
                     local test_name = stack:parse_testname(ts.query.get_node_text(node, 0))
-                    local fqdn = stack:get_fully_qualified_name(filetype, node, test_name)
-                    table.insert(result, fqdn)
+                    local fqn = stack:get_fully_qualified_name(filetype, node, test_name)
+                    table.insert(result, fqn)
                     return result
                 end
             end
@@ -44,7 +44,7 @@ end
 
 function stack:get_fully_qualified_name(filetype, curnode, name)
     -- local ts_query = ts.get_query(ts_parsers.ft_to_lang(filetype), "nvim-test")
-    local fqdn_query = [[
+    local fqn_query = [[
       ((stmt (exp_infix (exp_apply 
           (exp_name) @exp-name
           (#match? @exp-name "^(describe)")
@@ -53,7 +53,7 @@ function stack:get_fully_qualified_name(filetype, curnode, name)
       ))
       @scope-root)
     ]]
-    local ts_query = ts.query.parse_query(ts_parsers.ft_to_lang(filetype), fqdn_query)
+    local ts_query = ts.query.parse_query(ts_parsers.ft_to_lang(filetype), fqn_query)
     local stop_index = curnode:start();
     curnode = curnode:parent()
     while curnode do

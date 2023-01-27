@@ -38,8 +38,8 @@ function cargotest:find_nearest_test(filetype)
                     local parse_testname_func = function (t_name)
                         return self:parse_testname(t_name)
                     end
-                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, "::")
-                    table.insert(result, fqdn)
+                    local fqn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, "::")
+                    table.insert(result, fqn)
                     return result
                 end
             end

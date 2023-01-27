@@ -64,8 +64,8 @@ function cstest:find_tests_in_file(filetype)
         if name == "test-name" then
           local test_name = self:parse_testname(ts.query.get_node_text(node, 0))
           --print("test name: " .. test_name)
-          local fqdn = self:get_fully_qualified_name(filetype, node, test_name)
-          table.insert(result, fqdn)
+          local fqn = self:get_fully_qualified_name(filetype, node, test_name)
+          table.insert(result, fqn)
         end
       end
     end
@@ -88,8 +88,8 @@ function cstest:find_nearest_test(filetype)
                 if name == "test-name" then
                     local test_name = self:parse_testname(ts.query.get_node_text(node, 0))
                     --print("test name: " .. test_name)
-                    local fqdn = self:get_fully_qualified_name(filetype, node, test_name)
-                    table.insert(result, fqdn)
+                    local fqn = self:get_fully_qualified_name(filetype, node, test_name)
+                    table.insert(result, fqn)
                     return result
                 end
             end

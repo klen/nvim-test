@@ -45,8 +45,8 @@ function mocha:find_nearest_test(filetype)
                         return mocha:parse_testname(t_name)
                     end
                     local test_name = parse_testname_func(ts.query.get_node_text(node, 0))
-                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func)
-                    table.insert(result, fqdn)
+                    local fqn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func)
+                    table.insert(result, fqn)
                     return result
                 end
             end
