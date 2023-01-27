@@ -1,9 +1,35 @@
 local Runner = require "nvim-test.runner"
-local pytest = require "nvim-test.runners.pytest"
 local utils = require "nvim-test.utils"
 local ts_parsers = require("nvim-treesitter.parsers")
 local ts_utils = require("nvim-treesitter.ts_utils")
 local ts = vim.treesitter
+
+local fqdn_query = [[
+    (
+        (
+            class_definition name: (identifier) @test-name
+            (#match? @test-name "[Tt]est")
+        )
+    @scope-root)
+]]
+
+local query = [[
+      ; Class
+      (
+        (
+          class_definition name: (identifier) @test-name
+          (#match? @test-name "[Tt]est")
+        )
+      @scope-root)
+
+      ; Function
+      (
+        (
+          function_definition name: (identifier) @test-name
+          (#match? @test-name "^[Tt]est")
+        )
+      @scope-root)
+    ]]
 
 local pyunit = Runner:init({
   command = { (vim.env.VIRTUAL_ENV or "venv") .. "/bin/python", "python" },
@@ -11,7 +37,7 @@ local pyunit = Runner:init({
   file_pattern = "\\v^test.*\\.py$",
   find_files = { "test_{name}.py" },
 }, {
-  python = pytest.queries.python,
+  python = query,
 })
 
 
@@ -21,7 +47,7 @@ function pyunit:find_nearest_test(filetype)
   if ts_query then
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
-        for pattern, match, _ in ts_query:iter_matches(curnode, 0) do
+        for _, match, _ in ts_query:iter_matches(curnode, 0) do
             for id, node in pairs(match) do
                 local name = ts_query.captures[id]
                 if name == "test-name" then
@@ -29,7 +55,7 @@ function pyunit:find_nearest_test(filetype)
                     local parse_testname_func = function (t_name)
                         return pyunit:parse_testname(t_name)
                     end
-                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func)
+                    local fqdn = utils:get_fully_qualified_name(filetype, node, test_name, parse_testname_func, ".", fqdn_query)
                     table.insert(result, fqdn)
                     return result
                 end
@@ -41,9 +67,9 @@ function pyunit:find_nearest_test(filetype)
   return result
 end
 
-function pyunit:is_test(name)
-  return pytest:is_test(name)
-end
+-- function pyunit:is_test(name)
+--   args[#args] = args[#args] .. "::" .. table.concat(tests, "::")
+-- end
 
 function pyunit:build_args(args, filename, opts)
   if filename then
