@@ -10,10 +10,6 @@ local pyunit = Runner:init({
   python = pytest.queries.python,
 })
 
-function pyunit:is_test(name)
-  return pytest:is_test(name)
-end
-
 function pyunit:build_args(args, filename, opts)
   if filename then
     local path, _ = vim.fn.fnamemodify(filename, ":.:r"):gsub("/", ".")

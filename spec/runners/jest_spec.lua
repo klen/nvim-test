@@ -1,3 +1,8 @@
+-- Type: test
+-- @spec: jest_spec.lua
+-- @tags: jest
+-- @description: Jest test runner
+
 local helpers = require "spec.helpers"
 
 describe("jest", function()

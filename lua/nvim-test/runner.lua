@@ -1,7 +1,7 @@
 ---@diagnostic disable: unused-local
 local utils = require "nvim-test.utils"
 local ts_utils = require "nvim-treesitter.ts_utils"
-local ts_parsers = require("nvim-treesitter.parsers")
+local ts_parsers = require "nvim-treesitter.parsers"
 local ts = vim.treesitter
 
 ---@class Runner
@@ -113,8 +113,6 @@ function Runner:build_cmd(filename, opts)
 end
 
 -- Build arguments
----
----@return table args arguments list
 function Runner:build_args(args, filename, opts)
   if filename then
     table.insert(args, filename)
