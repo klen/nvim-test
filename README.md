@@ -1,6 +1,6 @@
 <img src="https://neovim.io/logos/neovim-mark-flat.png" align="right" width="144" />
 
-# nvim-test 1.2.2
+# nvim-test 1.3.0
 
 Test Runner for neovim
 
