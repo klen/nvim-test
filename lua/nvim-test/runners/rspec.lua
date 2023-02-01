@@ -1,7 +1,8 @@
 local Runner = require "nvim-test.runner"
+local utils = require "nvim-test.utils"
 
 local rspec = Runner:init({
-  command = { "rspec" },
+  command = { "bundle", "exec", "rspec" },
   file_pattern = "\\v(spec_[^.]+|[^.]+_spec)\\.rb$",
   find_files = { "{name}_spec.rb" },
 }, {
@@ -15,6 +16,14 @@ local rspec = Runner:init({
       @scope-root)
     ]],
 })
+
+function rspec:find_working_directory(filename)
+  local root = self.config.working_directory
+  if not root then
+    root = utils.find_relative_root(filename, "Gemfile")
+  end
+  return root
+end
 
 function rspec:build_test_args(args, tests)
   table.insert(args, "--example")

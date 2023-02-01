@@ -95,6 +95,13 @@ function Runner:parse_testname(name)
   return name
 end
 
+-- Find root directory
+---@param filename string
+---@return string
+function Runner:find_working_directory(filename)
+  return self.config.working_directory
+end
+
 -- Build command list
 ---
 ---@return table cmd command list

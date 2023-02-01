@@ -1,4 +1,5 @@
 local Runner = require "nvim-test.runner"
+local utils = require "nvim-test.utils"
 
 local query = [[
   ((expression_statement
@@ -29,6 +30,14 @@ end
 function jest:build_test_args(args, tests)
   table.insert(args, "-t")
   table.insert(args, "^" .. table.concat(tests, " ") .. "$")
+end
+
+function jest:find_working_directory(filename)
+  local root = self.config.working_directory
+  if not root then
+    root = utils.find_relative_root(filename, "package.json")
+  end
+  return root
 end
 
 return jest
