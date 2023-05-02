@@ -20,6 +20,7 @@ nvim_treesitter.setup {
     "ruby",
     "rust",
     "typescript",
+    "zig",
   },
   sync_install = true,
 }
