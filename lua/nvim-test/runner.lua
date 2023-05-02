@@ -19,7 +19,7 @@ function Runner:init(config, queries)
   self = setmetatable({}, Runner)
   self.queries = queries or {}
   for ft, query in pairs(self.queries) do
-    ts.set_query(ft, "nvim-test", query)
+    ts.query.set(ft, "nvim-test", query)
   end
   self:setup(config)
   return self
@@ -36,7 +36,7 @@ function Runner:setup(config)
 end
 
 function Runner:find_nearest_test(filetype)
-  local query = ts.get_query(ts_parsers.ft_to_lang(filetype), "nvim-test")
+  local query = ts.query.get(ts_parsers.ft_to_lang(filetype), "nvim-test")
   local result = {}
   if query then
     local curnode = ts_utils.get_node_at_cursor()
