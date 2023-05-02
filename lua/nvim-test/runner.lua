@@ -50,7 +50,7 @@ function Runner:find_nearest_test(filetype)
             return result
           end
         end
-        local name = self:parse_testname(ts.query.get_node_text(capture_node, 0))
+        local name = self:parse_testname(ts.get_node_text(capture_node, 0))
         table.insert(result, 1, name)
       end
       curnode = curnode:parent()
