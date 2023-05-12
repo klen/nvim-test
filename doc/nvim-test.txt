@@ -181,6 +181,39 @@ Default options: >
 <
 
 ------------------------------------------------------------------------------
+DAP                                            *nvim-test-dap*
+
+Setup DAP integration: >
+
+  require('nvim-test').setup {
+    term = "dap",
+    termOpts = {
+      dap = {
+        type = "pwa-node",
+        request = "launch",
+        rootPath = "${workspaceFolder}",
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal",
+        internalConsoleOptions = "neverOpen",
+      },
+    },
+  }
+
+Setup runner: >
+
+  require('nvim-test.runners.jest'):setup {
+    command = { "node" },
+    args = {
+      "./node_modules/jest/bin/jest.js",
+      "--verbose",
+      "--runInBand",
+      "--no-cache",
+      "--no-coverage",
+    },
+  }
+<
+
+------------------------------------------------------------------------------
 ABOUT                                            *nvim-test-about*
 
 Author:  Kirill Klenove <horneds@gmail.com>
