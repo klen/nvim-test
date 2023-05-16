@@ -25,7 +25,6 @@ function M.run(scope)
 
     -- Find tests
     if scope == "nearest" then
-      print("runner: " .. vim.inspect(runner))
       opts.tests = runner:find_nearest_test(filetype)
     elseif scope == "file" then
       opts.tests = runner:find_tests_in_file(filetype)

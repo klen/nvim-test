@@ -48,14 +48,10 @@ function Runner:find_nearest_test(filetype)
     local curnode = ts_utils.get_node_at_cursor()
     while curnode do
         for pattern, match, metadata in query:iter_matches(curnode, 0) do
-            --print("pattern: " .. vim.inspect(pattern))
-            --print("match: " .. vim.inspect(match))
             for id, node in pairs(match) do
                 local name = query.captures[id]
-                --print("capture: " .. name)
                 if name == "test-name" then
                     local test_name = self:parse_testname(ts.query.get_node_text(node, 0))
-                    --print("test name: " .. test_name)
                     local fqn = self:get_fully_qualified_name(filetype, node, test_name)
                     table.insert(result, fqn)
                     return result

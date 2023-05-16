@@ -133,14 +133,11 @@ function M:get_fully_qualified_name(filetype, curnode, name, parse_testname_func
     curnode = curnode:parent()
     while curnode do
         local type = curnode:type()
-        print("ts type: " .. type)
             for _, match, _ in ts_query:iter_matches(curnode, 0, curnode:start(), stop_index) do
                 for id, node in pairs(match) do
                     local capture_name = ts_query.captures[id]
-                    print("capture_name: " .. capture_name)
                     if capture_name == "test-name" then
                         local test_name = parse_testname_func(ts.query.get_node_text(node, 0))
-                        print("test_name: " .. test_name)
                         name = test_name .. separator .. name
                         break
                     end
