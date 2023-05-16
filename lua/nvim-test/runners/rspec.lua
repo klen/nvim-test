@@ -42,6 +42,7 @@ function rspec:build_args(args, filename, opts)
   if opts.tests and #opts.tests > 0 then
     self:build_test_args(args, opts.tests)
   end
+end
 
 function rspec:parse_testname(name)
   return name:gsub("^[\"'`]", ""):gsub("[\"'`]$", "")
