@@ -15,7 +15,7 @@ local query = [[
     ]]
 
 local rspec = Runner:init({
-  command = { "rspec" },
+  command = { "rspec", "bundle" },
   file_pattern = "\\v(spec_[^.]+|[^.]+_spec)\\.rb$",
   find_files = { "{name}_spec.rb" },
 }, {
