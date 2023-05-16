@@ -67,10 +67,6 @@ function pyunit:find_nearest_test(filetype)
   return result
 end
 
--- function pyunit:is_test(name)
---   args[#args] = args[#args] .. "::" .. table.concat(tests, "::")
--- end
-
 function pyunit:build_args(args, filename, opts)
   if filename then
     local path, _ = vim.fn.fnamemodify(filename, ":.:r"):gsub("/", ".")
