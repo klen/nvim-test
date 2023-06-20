@@ -9,7 +9,6 @@ local cstest = Runner:init({
   args = { "test" },
   file_pattern = "\\v(test/.*|Tests)\\.cs$",
   find_files = { "{name}Tests.{ext}", "Tests.{ext}" }, -- find testfile for a file
-  working_directory = utils.find_proj_dir('^.+%.csproj$', vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h"))
 }, {
   c_sharp = [[
     ; Method
@@ -89,6 +88,14 @@ function cstest:get_fully_qualified_name(filetype, curnode, name)
         curnode = curnode:parent()
     end
     return name
+end
+
+function cstest:find_working_directory(filename)
+  local root = self.config.working_directory
+  if not root then
+    root = utils.find_relative_root(filename, "^.+%.csproj$")
+  end
+  return root
 end
 
 function cstest:build_args(args, filename, opts)

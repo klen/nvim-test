@@ -71,41 +71,28 @@ function M.format_pattern(pattern, ctx)
   return res
 end
 
----Find the project root based on an indicating filename
+---Find the project root based on an indicating filename pattern
 ---@param source string
----@param indicator string
+---@param indicator_pattern string
 ---@return string
-function M.find_relative_root(source, indicator)
-  local path = vim.fn.findfile(indicator, vim.fn.fnamemodify(source, ":p") .. ";")
-  if path and #path > 0 then
-    path = vim.fn.fnamemodify(path, ":p:h")
-  end
-  return path
-end
-
---- Find projects file directory by pattern
---
----@param proj_file_pattern string
----@param source string
----@return string
-function M.find_proj_dir(proj_file_pattern, source)
-  local is_proj_file = function (filename)
-    local match = string.match(filename, proj_file_pattern)
+function M.find_relative_root(source, indicator_pattern)
+  local path = vim.fn.fnamemodify(source, ":.:h");
+  local fn_match_file = function (filename)
+    local match = string.match(filename, indicator_pattern)
     if match then
       return true
     end
     return false
   end
-  local projfiles = vim.fs.find(is_proj_file, {
-    path = source,
+  local projfiles = vim.fs.find(fn_match_file, {
+    path = path,
     upward = true,
     type = "file"
   })
   if projfiles and #projfiles > 0 then
-    local dir = vim.fn.fnamemodify(projfiles[1], ":h")
-    return dir
+    path = vim.fn.fnamemodify(projfiles[1], ":.:h")
   end
-  return source
+  return path
 end
 
 --- Find fully qualified name of the test that is passed in name
