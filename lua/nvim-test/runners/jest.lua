@@ -21,6 +21,7 @@ local jest = Runner:init({
 }, {
   javascript = query,
   typescript = query,
+  tsx        = query,
 })
 
 function jest:parse_testname(name)
