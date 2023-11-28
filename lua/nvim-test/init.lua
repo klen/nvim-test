@@ -124,6 +124,7 @@ function M.run_cmd(cmd, cfg)
     width = { opts.width, "number" },
     height = { opts.height, "number" },
     go_back = { opts.go_back, "boolean" },
+    float_position = { opts.float_position, "string" },
     -- stopinsert = { opts.stopinsert, "boolean" },
   }
   return termExec(cmd, cfg, opts)
