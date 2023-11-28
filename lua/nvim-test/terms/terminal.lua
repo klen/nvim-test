@@ -24,7 +24,9 @@ return function(cmd, cfg, termCfg)
   if termCfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_open_win(bufnr, true, {
-      row = math.ceil(vim.o.lines - termCfg.height) / 2 - 1,
+      row = termCfg.float_position == "top" and 0
+        or termCfg.float_position == "bottom" and math.ceil(vim.o.lines - termCfg.height) - 3
+        or math.ceil(vim.o.lines - termCfg.height) / 2 - 1,
       col = math.ceil(vim.o.columns - termCfg.width) / 2 - 1,
       relative = "editor",
       width = termCfg.width,
