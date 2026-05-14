@@ -8,6 +8,7 @@ local mocha = Runner:init({
 }, {
   javascript = jest.queries.javascript,
   typescript = jest.queries.typescript,
+  tsx = jest.queries.typescript,
 })
 
 function mocha:parse_testname(name)

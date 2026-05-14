@@ -7,6 +7,7 @@ local tsmocha = Runner:init({
   find_files = { "{name}.test.{ext}" },
 }, {
   typescript = mocha.queries.typescript,
+  tsx = mocha.queries.typescript,
 })
 
 function tsmocha:parse_testname(name)
