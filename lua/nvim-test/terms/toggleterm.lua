@@ -41,4 +41,7 @@ return function(cmd, cfg, termCfg)
     termCfg.direction,
     true
   )
+  if termCfg.go_back_immediately then
+    vim.cmd "wincmd p"
+  end
 end

@@ -35,7 +35,11 @@ return function(cmd, cfg, termCfg)
       style = "minimal",
       border = "single",
     })
-    return exec(cmd, cfg, termCfg)
+    exec(cmd, cfg, termCfg)
+    if termCfg.go_back_immediately then
+      vim.cmd "wincmd p"
+    end
+    return
   end
 
   local split = directionsMap[termCfg.direction]
@@ -56,4 +60,7 @@ return function(cmd, cfg, termCfg)
   vim.cmd(string.format("botright %s new", split))
   exec(cmd, cfg, termCfg)
   term = vim.api.nvim_get_current_buf()
+  if termCfg.go_back_immediately then
+    vim.cmd "wincmd p"
+  end
 end
