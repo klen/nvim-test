@@ -52,12 +52,15 @@ jobs:
             repo="tree-sitter-${lang}"
             [ "${lang}" = "c_sharp" ] && repo="tree-sitter-c-sharp"
             [ "${lang}" = "typescript" ] && repo="tree-sitter-typescript"
-            [ "${lang}" = "dart" ] && repo="tree-sitter-dart" && DART_ORG="UserNobody14"
             echo "Building ${lang}..."
             TMP="/tmp/ts-${lang}"
             rm -rf "${TMP}"
-            git clone --depth=1 "https://github.com/${DART_ORG:-tree-sitter}/${repo}" "${TMP}" 2>/dev/null || \
-            git clone --depth=1 "https://github.com/${DART_ORG:-tree-sitter-grammars}/${repo}" "${TMP}" 2>/dev/null || true
+            if [ "${lang}" = "dart" ]; then
+              git clone --depth=1 "https://github.com/UserNobody14/${repo}" "${TMP}" 2>/dev/null || true
+            else
+              git clone --depth=1 "https://github.com/tree-sitter/${repo}" "${TMP}" 2>/dev/null || \
+              git clone --depth=1 "https://github.com/tree-sitter-grammars/${repo}" "${TMP}" 2>/dev/null || true
+            fi
             if [ -d "${TMP}" ]; then
               for subd in . typescript; do
                 (cd "${TMP}/${subd}" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) && break
