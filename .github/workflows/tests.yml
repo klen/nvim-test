@@ -15,7 +15,6 @@ jobs:
           - ubuntu-latest
           - macos-latest
         neovim:
-          - v0.10.4
           - v0.11.0
           - stable
           - nightly
@@ -34,7 +33,7 @@ jobs:
           version: ${{ matrix.neovim }}
 
       - name: Install tree-sitter CLI
-        run: npm install -g tree-sitter-cli@0.22.6
+        run: npm install -g tree-sitter-cli
 
       - name: Build tree-sitter parsers
         run: |
