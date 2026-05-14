@@ -23,9 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: notomo/action-setup-nvim-lua@v1
+      - uses: notomo/action-setup-nvim-lua@v2
         with:
-          luarocks-version: '3.11.0'
+          luarocks-version: '3.12.2'
 
       - uses: rhysd/action-setup-vim@v1
         id: vim
