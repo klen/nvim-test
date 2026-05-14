@@ -1,8 +1,6 @@
 ---@diagnostic disable: unused-local
-local utils = require "nvim-test.utils"
-local ts_utils = require "nvim-treesitter.ts_utils"
-local ts_parsers = require "nvim-treesitter.parsers"
 local ts = vim.treesitter
+local utils = require("nvim-test.utils")
 
 ---@class Runner
 local Runner = {
@@ -19,7 +17,7 @@ function Runner:init(config, queries)
   self = setmetatable({}, Runner)
   self.queries = queries or {}
   for ft, query in pairs(self.queries) do
-    local set_query = ts.query.set or ts.set_query  -- neovim 0.8 support
+    local set_query = ts.query.set or ts.set_query -- neovim 0.8 support
     set_query(ft, "nvim-test", query)
   end
   self:setup(config)
@@ -37,11 +35,11 @@ function Runner:setup(config)
 end
 
 function Runner:find_nearest_test(filetype)
-  local query_get = ts.query.get or ts.get_query  -- neovim 0.8 support
-  local query = query_get(ts_parsers.ft_to_lang(filetype), "nvim-test")
+  local parser = ts.get_parser()
+  local query = ts.query.get(ts.language.get_lang(parser:lang()), "nvim-test")
   local result = {}
   if query then
-    local curnode = ts_utils.get_node_at_cursor()
+    local curnode = ts.get_node()
     while curnode do
       local iter = query:iter_captures(curnode, 0)
       local capture_id, capture_node = iter()

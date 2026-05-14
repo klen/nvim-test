@@ -7,20 +7,19 @@ Test Runner for neovim
 [![tests](https://github.com/klen/nvim-test/actions/workflows/tests.yml/badge.svg)](https://github.com/klen/nvim-test/actions/workflows/tests.yml)
 [![Awesome Neovim](https://awesome.re/badge-flat.svg)](https://github.com/rockerBOO/awesome-neovim)
 
-
 ## Features
 
-| Language       | Test Runners                     |
-| -------------: | :------------------------------- |
-| **C Sharp**    | `dotnet test`                    |
-| **Go**         | `go-test`                        |
-| **Haskell**    | `hspec`, `stack`                 |
-| **Javascript** | `jest`, `mocha`                  |
-| **Lua**        | `busted`, `vusted`               |
-| **Python**     | `pytest`, `pyunit`               |
-| **Ruby**       | `rspec`                          |
-| **Rust**       | `cargo-test`                     |
-| **Typescript** | `jest`, `mocha`, `ts-mocha`      |
+|       Language | Test Runners                |
+| -------------: | :-------------------------- |
+|    **C Sharp** | `dotnet test`               |
+|         **Go** | `go-test`                   |
+|    **Haskell** | `hspec`, `stack`            |
+| **Javascript** | `jest`, `mocha`             |
+|        **Lua** | `busted`, `vusted`          |
+|     **Python** | `pytest`, `pyunit`          |
+|       **Ruby** | `rspec`                     |
+|       **Rust** | `cargo-test`                |
+| **Typescript** | `jest`, `mocha`, `ts-mocha` |
 
 ## Install
 
@@ -86,6 +85,7 @@ require('nvim-test').setup {
 ```
 
 Setup a runner:
+
 ```lua
   require('nvim-test.runners.jest'):setup {
     command = "~/node_modules/.bin/jest",                                       -- a command to run the test runner
