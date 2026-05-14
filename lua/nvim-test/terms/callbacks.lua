@@ -17,7 +17,7 @@ function M.bind_on_exit(cfg)
     if stopinsert == true or cfg.go_back then
       vim.cmd "stopinsert!"
     end
-    if cfg.go_back then
+    if cfg.go_back and not cfg.go_back_immediately then
       vim.cmd "wincmd p"
     end
   end
