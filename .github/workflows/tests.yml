@@ -34,7 +34,7 @@ jobs:
           version: ${{ matrix.neovim }}
 
       - name: Install tree-sitter CLI
-        run: npm install -g tree-sitter-cli@0.24.7
+        run: npm install -g tree-sitter-cli@0.22.6
 
       - name: Build tree-sitter parsers
         run: |
