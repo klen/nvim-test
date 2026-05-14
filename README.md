@@ -7,6 +7,8 @@ Test Runner for neovim
 [![tests](https://github.com/klen/nvim-test/actions/workflows/tests.yml/badge.svg)](https://github.com/klen/nvim-test/actions/workflows/tests.yml)
 [![Awesome Neovim](https://awesome.re/badge-flat.svg)](https://github.com/rockerBOO/awesome-neovim)
 
+> **Requires Neovim 0.11+**
+
 ## Features
 
 |       Language | Test Runners                |
@@ -23,11 +25,18 @@ Test Runner for neovim
 
 ## Install
 
-with [packer](https://github.com/wbthomason/packer.nvim):
+**Neovim 0.11+** (built-in package manager):
 
 ```lua
+vim.pack.add({ "https://github.com/klen/nvim-test" }, { confirm = false })
 
-use {
+require('nvim-test').setup()
+```
+
+Or with [lazy.nvim](https://github.com/folke/lazy.nvim):
+
+```lua
+{
   "klen/nvim-test",
   config = function()
     require('nvim-test').setup()
