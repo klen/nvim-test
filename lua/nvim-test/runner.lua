@@ -105,7 +105,10 @@ end
 ---@param filename string
 ---@return string
 function Runner:find_working_directory(filename)
-  return self.config.working_directory
+  if self.config.working_directory then
+    return self.config.working_directory
+  end
+  return utils.find_relative_root(filename, ".git")
 end
 
 -- Build command list
