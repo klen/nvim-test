@@ -28,7 +28,7 @@ Test Runner for neovim
 **Neovim 0.11+** (built-in package manager):
 
 ```lua
-vim.pack.add({ "https://github.com/klen/nvim-test" }, { confirm = false })
+vim.pack.add({ "https://github.com/klen/nvim-test" })
 
 require('nvim-test').setup()
 ```
