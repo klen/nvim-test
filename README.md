@@ -14,6 +14,7 @@ Test Runner for neovim
 |       Language | Test Runners                |
 | -------------: | :-------------------------- |
 |    **C Sharp** | `dotnet test`               |
+|       **Dart** | `dart test`                 |
 |         **Go** | `go-test`                   |
 |    **Haskell** | `hspec`, `stack`            |
 | **Javascript** | `jest`, `mocha`             |
@@ -80,6 +81,7 @@ require('nvim-test').setup {
   },
   runners = {               -- setup tests runners
     cs = "nvim-test.runners.dotnet",
+    dart = "nvim-test.runners.dart",
     go = "nvim-test.runners.go-test",
     haskell = "nvim-test.runners.hspec",
     javascriptreact = "nvim-test.runners.jest",

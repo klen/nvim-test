@@ -1,5 +1,6 @@
 return {
   cs = "nvim-test.runners.dotnet",
+  dart = "nvim-test.runners.dart",
   go = "nvim-test.runners.go-test",
   haskell = "nvim-test.runners.hspec",
   javascript = "nvim-test.runners.jest",

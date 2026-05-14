@@ -47,16 +47,17 @@ jobs:
         run: |
           PARSER_DIR="${HOME}/.local/share/nvim/site/parser"
           mkdir -p "${PARSER_DIR}"
-          for lang in c_sharp go haskell javascript lua python ruby rust typescript zig; do
+          for lang in c_sharp dart go haskell javascript lua python ruby rust typescript zig; do
             SO="${PARSER_DIR}/${lang}.so"
             repo="tree-sitter-${lang}"
             [ "${lang}" = "c_sharp" ] && repo="tree-sitter-c-sharp"
             [ "${lang}" = "typescript" ] && repo="tree-sitter-typescript"
+            [ "${lang}" = "dart" ] && repo="tree-sitter-dart" && DART_ORG="UserNobody14"
             echo "Building ${lang}..."
             TMP="/tmp/ts-${lang}"
             rm -rf "${TMP}"
-            git clone --depth=1 "https://github.com/tree-sitter/${repo}" "${TMP}" 2>/dev/null || \
-            git clone --depth=1 "https://github.com/tree-sitter-grammars/${repo}" "${TMP}" 2>/dev/null || true
+            git clone --depth=1 "https://github.com/${DART_ORG:-tree-sitter}/${repo}" "${TMP}" 2>/dev/null || \
+            git clone --depth=1 "https://github.com/${DART_ORG:-tree-sitter-grammars}/${repo}" "${TMP}" 2>/dev/null || true
             if [ -d "${TMP}" ]; then
               for subd in . typescript; do
                 (cd "${TMP}/${subd}" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) && break
