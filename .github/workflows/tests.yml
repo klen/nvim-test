@@ -12,31 +12,54 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
-        - macos-latest
-        # - windows-latest
-        version:
-        - 'v0.8.2'
-        - 'v0.9.0'
-        - 'nightly'
+          - ubuntu-latest
+          - macos-latest
+        neovim:
+          - v0.10.4
+          - v0.11.0
+          - stable
+          - nightly
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      # Setup nvim
       - uses: notomo/action-setup-nvim-lua@v1
         with:
           luarocks-version: '3.5.0'
-
-      # Install vusted
-      - run: luarocks install vusted
 
       - uses: rhysd/action-setup-vim@v1
         id: vim
         with:
           neovim: true
-          version: ${{matrix.version}}
+          version: ${{ matrix.neovim }}
 
-      - run: make test
+      - name: Install tree-sitter CLI
+        run: npm install -g tree-sitter-cli
+
+      - name: Build tree-sitter parsers
+        run: |
+          PARSER_DIR="${HOME}/.local/share/nvim/site/parser"
+          mkdir -p "${PARSER_DIR}"
+          for lang in c_sharp go haskell javascript lua python ruby rust typescript zig; do
+            SO="${PARSER_DIR}/${lang}.so"
+            [ -f "${SO}" ] && continue
+            repo="tree-sitter-${lang}"
+            [ "${lang}" = "c_sharp" ] && repo="tree-sitter-c-sharp"
+            [ "${lang}" = "typescript" ] && repo="tree-sitter-typescript"
+            echo "Building ${lang}..."
+            git clone --depth=1 "https://github.com/tree-sitter/${repo}" "/tmp/ts-${lang}" 2>/dev/null
+            (cd "/tmp/ts-${lang}" && tree-sitter build -o "${SO}" . 2>/dev/null) || \
+            (cd "/tmp/ts-${lang}/typescript" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) || \
+            echo "::warning::Failed to build parser for ${lang}"
+            rm -rf "/tmp/ts-${lang}"
+          done
+          echo "Installed parsers:"
+          ls -la "${PARSER_DIR}"
+
+      - name: Install vusted
+        run: luarocks install vusted
+
+      - name: Run tests
+        run: make test
         env:
           VUSTED_NVIM: ${{ steps.vim.outputs.executable }}
