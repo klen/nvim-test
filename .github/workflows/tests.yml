@@ -35,24 +35,29 @@ jobs:
       - name: Install tree-sitter CLI
         run: npm install -g tree-sitter-cli
 
+      - name: Cache tree-sitter parsers
+        id: cache-parsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/nvim/site/parser
+          key: ts-parsers-${{ runner.os }}-${{ hashFiles('.github/workflows/tests.yml') }}
+
       - name: Build tree-sitter parsers
+        if: steps.cache-parsers.outputs.cache-hit != 'true'
         run: |
           PARSER_DIR="${HOME}/.local/share/nvim/site/parser"
           mkdir -p "${PARSER_DIR}"
           for lang in c_sharp go haskell javascript lua python ruby rust typescript zig; do
             SO="${PARSER_DIR}/${lang}.so"
-            [ -f "${SO}" ] && continue
             repo="tree-sitter-${lang}"
             [ "${lang}" = "c_sharp" ] && repo="tree-sitter-c-sharp"
             [ "${lang}" = "typescript" ] && repo="tree-sitter-typescript"
             echo "Building ${lang}..."
             TMP="/tmp/ts-${lang}"
             rm -rf "${TMP}"
-            # Try tree-sitter org first, then tree-sitter-grammars (community grammars)
             git clone --depth=1 "https://github.com/tree-sitter/${repo}" "${TMP}" 2>/dev/null || \
             git clone --depth=1 "https://github.com/tree-sitter-grammars/${repo}" "${TMP}" 2>/dev/null || true
             if [ -d "${TMP}" ]; then
-              # Subdirectory for typescript repo
               for subd in . typescript; do
                 (cd "${TMP}/${subd}" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) && break
               done
