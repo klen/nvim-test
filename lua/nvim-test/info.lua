@@ -83,6 +83,6 @@ return function()
   table.insert(lines, "<")
 
   vim.api.nvim_buf_set_lines(window.bufnr, 0, -1, true, lines)
-  vim.api.nvim_buf_set_option(window.bufnr, "modifiable", false)
-  vim.api.nvim_buf_set_option(window.bufnr, "filetype", "help")
+  vim.bo[window.bufnr].modifiable = false
+  vim.bo[window.bufnr].filetype = "help"
 end

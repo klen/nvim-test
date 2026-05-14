@@ -1,4 +1,5 @@
 local callbacks = require "nvim-test.terms.callbacks"
+local utils = require "nvim-test.utils"
 
 local terminal = require "toggleterm.terminal"
 -- local ok, terminal = pcall(require, "toggleterm.terminal")
@@ -19,6 +20,8 @@ return function(cmd, cfg, termCfg)
   end
   local on_exit = callbacks.bind_on_exit(termCfg)
 
+  local width, height = utils.resolve_dimensions(termCfg)
+
   -- Clean terminals
   if termCfg.keep_one and term then
     term:close()
@@ -34,7 +37,7 @@ return function(cmd, cfg, termCfg)
     end,
   }
   term:open(
-    termCfg.direction == "vertical" and termCfg.width or termCfg.height,
+    termCfg.direction == "vertical" and width or height,
     termCfg.direction,
     true
   )

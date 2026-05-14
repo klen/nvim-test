@@ -1,5 +1,21 @@
 local M = {}
 
+---Resolve width and height from term options, calling them if they are functions.
+---@param termCfg table
+---@return number width
+---@return number height
+function M.resolve_dimensions(termCfg)
+  local width = termCfg.width
+  local height = termCfg.height
+  if type(width) == "function" then
+    width = width()
+  end
+  if type(height) == "function" then
+    height = height()
+  end
+  return width, height
+end
+
 ---Get a text from the given treesitter node
 ---@return string s a text
 function M.get_node_text(node, bufnr)

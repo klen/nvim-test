@@ -1,5 +1,6 @@
 local notifier = require "nvim-test.notify"
 local api = vim.api
+local utils = require "nvim-test.utils"
 local suite_runner
 local Runner = require "nvim-test.runner"
 local M = {
@@ -119,16 +120,7 @@ function M.run_cmd(cmd, cfg)
     return notifier:notify(string.format("Term: %s is not supported", M.config.term), 4)
   end
   local opts = M.config.termOpts
-  local width = opts.width
-  local height = opts.height
-
-  -- check that width and height are not functions, if they are, call them to get the value
-  if type(width) == "function" then
-    width = width()
-  end
-  if type(height) == "function" then
-    height = opts.height()
-  end
+  local width, height = utils.resolve_dimensions(opts)
 
   vim.validate {
     direction = { opts.direction, "string" },

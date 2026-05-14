@@ -1,4 +1,5 @@
 local callbacks = require "nvim-test.terms.callbacks"
+local utils = require "nvim-test.utils"
 
 local directionsMap = {
   vertical = "vsplit",
@@ -17,18 +18,20 @@ local exec = function(cmd, cfg, termCfg)
   if cfg.working_directory and #cfg.working_directory > 0 then
     opts.cwd = cfg.working_directory
   end
-  return vim.fn.termopen(cmd, opts)
+  return vim.fn.jobstart(cmd, vim.tbl_extend("keep", opts, { term = true }))
 end
 
 return function(cmd, cfg, termCfg)
+  local width, height = utils.resolve_dimensions(termCfg)
+
   if termCfg.direction == "float" then
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_open_win(bufnr, true, {
-      row = math.ceil(vim.o.lines - termCfg.height) / 2 - 1,
-      col = math.ceil(vim.o.columns - termCfg.width) / 2 - 1,
+      row = math.ceil(vim.o.lines - height) / 2 - 1,
+      col = math.ceil(vim.o.columns - width) / 2 - 1,
       relative = "editor",
-      width = termCfg.width,
-      height = termCfg.height,
+      width = width,
+      height = height,
       style = "minimal",
       border = "single",
     })
@@ -36,11 +39,11 @@ return function(cmd, cfg, termCfg)
   end
 
   local split = directionsMap[termCfg.direction]
-  if termCfg.direction == "vertical" and termCfg.width then
-    split = termCfg.width .. split
+  if termCfg.direction == "vertical" and width then
+    split = width .. split
   end
-  if termCfg.direction == "horizontal" and termCfg.height then
-    split = termCfg.height .. split
+  if termCfg.direction == "horizontal" and height then
+    split = height .. split
   end
 
   -- Clean buffers
