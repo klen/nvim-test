@@ -1,10 +1,10 @@
-local notifier = require("nvim-test.notify")
+local notifier = require "nvim-test.notify"
 local api = vim.api
 local suite_runner
-local Runner = require("nvim-test.runner")
+local Runner = require "nvim-test.runner"
 local M = {
-  config = vim.deepcopy(require("nvim-test.config")),
-  runners = require("nvim-test.runners"),
+  config = vim.deepcopy(require "nvim-test.config"),
+  runners = require "nvim-test.runners",
 }
 
 -- Run tests
@@ -31,7 +31,8 @@ function M.run(scope)
 
     -- Find file
     if scope ~= "suite" then
-      filename = vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
+      filename =
+        vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
       if not runner:is_testfile(filename) then
         filename = runner:find_file(filename)
       end
@@ -97,7 +98,8 @@ end
 
 function M.edit()
   local runner = M.get_runner(vim.bo.filetype)
-  local filename = vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
+  local filename =
+    vim.fn.expand("%" .. (runner.config.filename_modifier or M.config.filename_modifier))
   if not runner:is_testfile(filename) then
     vim.api.nvim_command("edit " .. runner:find_file(filename, true))
   end
@@ -117,13 +119,22 @@ function M.run_cmd(cmd, cfg)
     return notifier:notify(string.format("Term: %s is not supported", M.config.term), 4)
   end
   local opts = M.config.termOpts
-  vim.validate({
+
+  -- check that width and height are not functions, if they are, call them to get the value
+  if type(opts.width) == "function" then
+    opts.width = opts.width()
+  end
+  if type(opts.height) == "function" then
+    opts.height = opts.height()
+  end
+
+  vim.validate {
     direction = { opts.direction, "string" },
     width = { opts.width, "number" },
     height = { opts.height, "number" },
     go_back = { opts.go_back, "boolean" },
     -- stopinsert = { opts.stopinsert, "boolean" },
-  })
+  }
   return termExec(cmd, cfg, opts)
 end
 
@@ -148,13 +159,13 @@ function M.setup(cfg)
 
   -- Create commands
   if M.config.commands_create then
-    api.nvim_command("command! TestFile lua require'nvim-test'.run('file')<CR>")
-    api.nvim_command("command! TestLast lua require'nvim-test'.run_last()<CR>")
-    api.nvim_command("command! TestNearest lua require'nvim-test'.run('nearest')<CR>")
-    api.nvim_command("command! TestSuite lua require'nvim-test'.run('suite')<CR>")
-    api.nvim_command("command! TestVisit lua require'nvim-test'.visit()<CR>")
-    api.nvim_command("command! TestInfo lua require'nvim-test.info'()<CR>")
-    api.nvim_command("command! TestEdit lua require'nvim-test'.edit()<CR>")
+    api.nvim_command "command! TestFile lua require'nvim-test'.run('file')<CR>"
+    api.nvim_command "command! TestLast lua require'nvim-test'.run_last()<CR>"
+    api.nvim_command "command! TestNearest lua require'nvim-test'.run('nearest')<CR>"
+    api.nvim_command "command! TestSuite lua require'nvim-test'.run('suite')<CR>"
+    api.nvim_command "command! TestVisit lua require'nvim-test'.visit()<CR>"
+    api.nvim_command "command! TestInfo lua require'nvim-test.info'()<CR>"
+    api.nvim_command "command! TestEdit lua require'nvim-test'.edit()<CR>"
   end
 end
 
