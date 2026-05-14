@@ -6,12 +6,13 @@ local hspec = Runner:init({
   find_files = { "{name}Spec.hs", "Spec.hs" },
 }, {
   haskell = [[
-      ((stmt (exp_infix (exp_apply 
-          (exp_name) @exp-name
+      ((infix
+        (apply
+          (variable) @exp-name
           (#match? @exp-name "^(describe|it)")
-          (exp_literal)  @test-name
+          (literal) @test-name
         )
-      ))
+      )
       @scope-root)
     ]],
 })

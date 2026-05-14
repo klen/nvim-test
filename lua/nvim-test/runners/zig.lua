@@ -2,7 +2,7 @@ local Runner = require("nvim-test.runner")
 
 local zig_test = Runner:init({ command = "zig" }, {
   zig = [[
-    (TestDecl . [(STRINGLITERALSINGLE) @test-name (IDENTIFIER) @test-name]) @scope-root
+    (test_declaration (string) @test-name) @scope-root
   ]],
 })
 

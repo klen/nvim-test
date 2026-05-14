@@ -36,25 +36,31 @@ end
 
 function Runner:find_nearest_test(filetype)
   local parser = ts.get_parser()
-  local query = ts.query.get(ts.language.get_lang(parser:lang()), "nvim-test")
+  if not parser then
+    return {}
+  end
+  parser:parse()
+  local lang = parser:lang()
+  local query = ts.query.get(ts.language.get_lang(lang), "nvim-test")
+  if not query then
+    return {}
+  end
   local result = {}
-  if query then
-    local curnode = ts.get_node()
-    while curnode do
-      local iter = query:iter_captures(curnode, 0)
-      local capture_id, capture_node = iter()
-      if capture_node == curnode and query.captures[capture_id] == "scope-root" then
-        while query.captures[capture_id] ~= "test-name" do
-          capture_id, capture_node = iter()
-          if not capture_id then
-            return result
-          end
+  local curnode = ts.get_node()
+  while curnode do
+    local iter = query:iter_captures(curnode, 0)
+    local capture_id, capture_node = iter()
+    if capture_node == curnode and query.captures[capture_id] == "scope-root" then
+      while query.captures[capture_id] ~= "test-name" do
+        capture_id, capture_node = iter()
+        if not capture_id then
+          return result
         end
-        local name = self:parse_testname(ts.get_node_text(capture_node, 0))
-        table.insert(result, 1, name)
       end
-      curnode = curnode:parent()
+      local name = self:parse_testname(ts.get_node_text(capture_node, 0))
+      table.insert(result, 1, name)
     end
+    curnode = curnode:parent()
   end
   return result
 end
