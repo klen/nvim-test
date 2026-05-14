@@ -25,7 +25,7 @@ jobs:
 
       - uses: notomo/action-setup-nvim-lua@v1
         with:
-          luarocks-version: '3.5.0'
+          luarocks-version: '3.11.0'
 
       - uses: rhysd/action-setup-vim@v1
         id: vim
