@@ -39,6 +39,9 @@ function cargotest:build_args(args, filename, opts)
     table.insert(args, table.concat(opts.tests, "::"))
     table.insert(args, "--")
     table.insert(args, "--exact")
+    if self.config.test_args then
+      vim.list_extend(args, self.config.test_args)
+    end
   else
     local parts = vim.fn.split(vim.fn.fnamemodify(filename, ":.:r"), "/")
     if parts[#parts] == "main" or parts[#parts] == "lib" or parts[#parts] == "mod" then
@@ -51,6 +54,10 @@ function cargotest:build_args(args, filename, opts)
     local modname = (#parts > 0) and table.concat(parts, "::")
     if modname then
       table.insert(args, modname .. "::")
+      if self.config.test_args then
+        table.insert(args, "--")
+        vim.list_extend(args, self.config.test_args)
+      end
     end
   end
 end
