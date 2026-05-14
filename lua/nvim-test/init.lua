@@ -119,19 +119,21 @@ function M.run_cmd(cmd, cfg)
     return notifier:notify(string.format("Term: %s is not supported", M.config.term), 4)
   end
   local opts = M.config.termOpts
+  local width = opts.width
+  local height = opts.height
 
   -- check that width and height are not functions, if they are, call them to get the value
-  if type(opts.width) == "function" then
-    opts.width = opts.width()
+  if type(width) == "function" then
+    width = width()
   end
-  if type(opts.height) == "function" then
-    opts.height = opts.height()
+  if type(height) == "function" then
+    height = opts.height()
   end
 
   vim.validate {
     direction = { opts.direction, "string" },
-    width = { opts.width, "number" },
-    height = { opts.height, "number" },
+    width = { width, "number" },
+    height = { height, "number" },
     go_back = { opts.go_back, "boolean" },
     -- stopinsert = { opts.stopinsert, "boolean" },
   }
