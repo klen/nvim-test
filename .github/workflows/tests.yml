@@ -47,11 +47,23 @@ jobs:
             [ "${lang}" = "c_sharp" ] && repo="tree-sitter-c-sharp"
             [ "${lang}" = "typescript" ] && repo="tree-sitter-typescript"
             echo "Building ${lang}..."
-            git clone --depth=1 "https://github.com/tree-sitter/${repo}" "/tmp/ts-${lang}" 2>/dev/null
-            (cd "/tmp/ts-${lang}" && tree-sitter build -o "${SO}" . 2>/dev/null) || \
-            (cd "/tmp/ts-${lang}/typescript" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) || \
-            echo "::warning::Failed to build parser for ${lang}"
-            rm -rf "/tmp/ts-${lang}"
+            TMP="/tmp/ts-${lang}"
+            rm -rf "${TMP}"
+            # Try tree-sitter org first, then tree-sitter-grammars (community grammars)
+            git clone --depth=1 "https://github.com/tree-sitter/${repo}" "${TMP}" 2>/dev/null || \
+            git clone --depth=1 "https://github.com/tree-sitter-grammars/${repo}" "${TMP}" 2>/dev/null || true
+            if [ -d "${TMP}" ]; then
+              # Subdirectory for typescript repo
+              for subd in . typescript; do
+                (cd "${TMP}/${subd}" 2>/dev/null && tree-sitter build -o "${SO}" . 2>/dev/null) && break
+              done
+              if [ ! -f "${SO}" ]; then
+                echo "::warning::Failed to build parser for ${lang}"
+              fi
+              rm -rf "${TMP}"
+            else
+              echo "::warning::Failed to clone repo for ${lang}"
+            fi
           done
           echo "Installed parsers:"
           ls -la "${PARSER_DIR}"
