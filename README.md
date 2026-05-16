@@ -57,6 +57,18 @@ The plugin defines the commands:
 - `TestVisit` - open the last run test in the current buffer
 - `TestInfo` - show an information about the plugin
 
+## Customization
+
+The test terminal buffer has `filetype=nvim-test`, so you can customize it via `ftplugin`:
+
+```lua
+-- ~/.config/nvim/after/ftplugin/nvim-test.lua
+vim.opt_local.number = false
+vim.opt_local.relativenumber = false
+vim.opt_local.wrap = false
+vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
+```
+
 ## Setup
 
 This plugin must be explicitly enabled by using `require("nvim-test").setup{}`

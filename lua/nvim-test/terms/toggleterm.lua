@@ -41,6 +41,7 @@ return function(cmd, cfg, termCfg)
     termCfg.direction,
     true
   )
+  vim.bo.filetype = "nvim-test"
   if termCfg.go_back_immediately then
     vim.cmd "wincmd p"
   end

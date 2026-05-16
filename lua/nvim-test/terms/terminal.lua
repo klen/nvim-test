@@ -36,6 +36,7 @@ return function(cmd, cfg, termCfg)
       border = "single",
     })
     exec(cmd, cfg, termCfg)
+    vim.bo[bufnr].filetype = "nvim-test"
     if termCfg.go_back_immediately then
       vim.cmd "wincmd p"
     end
@@ -60,6 +61,7 @@ return function(cmd, cfg, termCfg)
   vim.cmd(string.format("botright %s new", split))
   exec(cmd, cfg, termCfg)
   term = vim.api.nvim_get_current_buf()
+  vim.bo[term].filetype = "nvim-test"
   if termCfg.go_back_immediately then
     vim.cmd "wincmd p"
   end
